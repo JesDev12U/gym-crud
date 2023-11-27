@@ -21,6 +21,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     Date fechaActual;
     Thread t1;
     Inscripcion inscripcionForm;
+    CobrarMensualidad cobrarMensualidad;
     /**
      * Creates new form Principal
      */
@@ -126,7 +127,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         );
         desktopPaneLayout.setVerticalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 291, Short.MAX_VALUE)
+            .addGap(0, 391, Short.MAX_VALUE)
         );
 
         btnMenuInscripcion.setText("Inscripción");
@@ -144,6 +145,11 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         jMenu2.setText("Cobros");
 
         jMenuItem1.setText("Mensualidad");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
 
         jMenuItem2.setText("Semana");
@@ -186,7 +192,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(labelFechaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addContainerGap(549, Short.MAX_VALUE))
             .addComponent(desktopPane)
         );
         layout.setVerticalGroup(
@@ -195,7 +201,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
                 .addComponent(desktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelFechaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -207,6 +213,13 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         }
         centrarVentanaInterna(inscripcionForm);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if(!(cobrarMensualidad instanceof CobrarMensualidad)){
+            cobrarMensualidad = new CobrarMensualidad();
+        }
+        centrarVentanaInterna(cobrarMensualidad);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
