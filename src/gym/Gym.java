@@ -22,11 +22,23 @@ public class Gym {
         }
     }
     
-    public static void validarCamposVacios(javax.swing.JTextField txt, javax.swing.JLabel lbl){
-        if(txt.getText().isEmpty()){
-            lbl.setText("Campo obligatorio");
-        } else{
-            lbl.setText("");
+    public static void validarCamposVacios(javax.swing.JTextField arrayTxt[], javax.swing.JLabel lbl){
+        for(javax.swing.JTextField txt : arrayTxt){
+            if(txt.getText().isEmpty()){
+                lbl.setText("Campo obligatorio");
+            } else{
+                lbl.setText("");
+            }
+        }
+    }
+    
+    public static void habilitarBoton(javax.swing.JTextField arrayTxt[], javax.swing.JButton btn){
+        for(javax.swing.JTextField txt : arrayTxt){
+            if(txt.getText().equals("")){
+                btn.setEnabled(false);
+            } else{
+                btn.setEnabled(true);
+            }
         }
     }
     /**

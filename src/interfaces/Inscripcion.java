@@ -116,7 +116,10 @@ public class Inscripcion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtNomClienteKeyTyped
 
     private void txtNomClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomClienteKeyReleased
-        Gym.validarCamposVacios(txtNomCliente, labelCampoReq);
+        javax.swing.JTextField arrayTxt[] = new javax.swing.JTextField[1];
+        arrayTxt[0] = txtNomCliente;
+        Gym.validarCamposVacios(arrayTxt, labelCampoReq);
+        Gym.habilitarBoton(arrayTxt, btnRealizarIns);
     }//GEN-LAST:event_txtNomClienteKeyReleased
 
 
