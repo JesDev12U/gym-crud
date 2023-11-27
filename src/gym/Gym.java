@@ -10,42 +10,41 @@ package gym;
  */
 public class Gym {
 
-    public static void iniciarForm(javax.swing.JLabel lbl){
-        lbl.setText("Campo obligatorio");
+    public static void iniciarForm(javax.swing.JLabel arrayLbl[]) {
+        for(javax.swing.JLabel lbl : arrayLbl){
+            lbl.setText("Campo obligatorio");
+        }
     }
-    
-    public static void validarAlfabeto(java.awt.event.KeyEvent evento){
+
+    public static void validarAlfabeto(java.awt.event.KeyEvent evento) {
         //Validacion A-Z a-z
-        if(!(evento.getKeyChar() >= 65 && evento.getKeyChar() <= 90
-                ||evento.getKeyChar() >= 97 && evento.getKeyChar() <= 122)){
+        if (!(evento.getKeyChar() >= 65 && evento.getKeyChar() <= 90
+                || evento.getKeyChar() >= 97 && evento.getKeyChar() <= 122)) {
             evento.consume();
         }
     }
-    
-    public static void validarCamposVacios(javax.swing.JTextField arrayTxt[], javax.swing.JLabel lbl){
-        for(javax.swing.JTextField txt : arrayTxt){
-            if(txt.getText().isEmpty()){
-                lbl.setText("Campo obligatorio");
-            } else{
-                lbl.setText("");
-            }
+
+    public static void validarCamposVacios(javax.swing.JTextField txt, javax.swing.JLabel lbl) {
+        if (txt.getText().isEmpty()) {
+            lbl.setText("Campo obligatorio");
+        } else {
+            lbl.setText("");
         }
     }
-    
-    public static void habilitarBoton(javax.swing.JTextField arrayTxt[], javax.swing.JButton btn){
-        for(javax.swing.JTextField txt : arrayTxt){
-            if(txt.getText().equals("")){
-                btn.setEnabled(false);
-            } else{
-                btn.setEnabled(true);
-            }
+
+    public static void habilitarBoton(javax.swing.JTextField txt, javax.swing.JButton btn) {
+        if (txt.getText().equals("")) {
+            btn.setEnabled(false);
+        } else {
+            btn.setEnabled(true);
         }
     }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
     }
-    
+
 }

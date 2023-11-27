@@ -16,8 +16,12 @@ public class Inscripcion extends javax.swing.JInternalFrame {
      */
     public Inscripcion() {
         initComponents();
+        javax.swing.JLabel arrayLbl[] = new javax.swing.JLabel[3];
+        arrayLbl[0] = labelCampoReq;
+        arrayLbl[1] = labelCampoReq1;
+        arrayLbl[2] = labelCampoReq2;
         btnRealizarIns.setEnabled(false);
-        Gym.iniciarForm(labelCampoReq);
+        Gym.iniciarForm(arrayLbl);
     }
     
     /**
@@ -36,6 +40,12 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         btnRealizarIns = new javax.swing.JButton();
         labelCampoReq = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtApPatCliente = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtApMatCliente = new javax.swing.JTextField();
+        labelCampoReq1 = new javax.swing.JLabel();
+        labelCampoReq2 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -65,6 +75,32 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
         labelCampoReq.setForeground(new java.awt.Color(255, 0, 0));
 
+        jLabel4.setText("Apellido paterno");
+
+        txtApPatCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtApPatClienteKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApPatClienteKeyTyped(evt);
+            }
+        });
+
+        jLabel5.setText("Apellido materno");
+
+        txtApMatCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtApMatClienteKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApMatClienteKeyTyped(evt);
+            }
+        });
+
+        labelCampoReq1.setForeground(new java.awt.Color(255, 0, 0));
+
+        labelCampoReq2.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -77,35 +113,65 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(173, 173, 173)
-                                .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtApMatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtApPatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtNomCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNomCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(labelCampoReq))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(labelCampoReq2, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(labelCampoReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelCampoReq, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(337, 337, 337)
                         .addComponent(jLabel1)))
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNomCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelCampoReq))
-                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtNomCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelCampoReq, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtApPatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(labelCampoReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(txtApMatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelCampoReq2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 93, Short.MAX_VALUE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 49, Short.MAX_VALUE))
         );
 
         pack();
@@ -116,11 +182,27 @@ public class Inscripcion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtNomClienteKeyTyped
 
     private void txtNomClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomClienteKeyReleased
-        javax.swing.JTextField arrayTxt[] = new javax.swing.JTextField[1];
-        arrayTxt[0] = txtNomCliente;
-        Gym.validarCamposVacios(arrayTxt, labelCampoReq);
-        Gym.habilitarBoton(arrayTxt, btnRealizarIns);
+        Gym.validarCamposVacios(txtNomCliente, labelCampoReq);
+        Gym.habilitarBoton(txtNomCliente, btnRealizarIns);
     }//GEN-LAST:event_txtNomClienteKeyReleased
+
+    private void txtApPatClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApPatClienteKeyReleased
+        Gym.validarCamposVacios(txtApPatCliente, labelCampoReq1);
+        Gym.habilitarBoton(txtApPatCliente, btnRealizarIns);
+    }//GEN-LAST:event_txtApPatClienteKeyReleased
+
+    private void txtApPatClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApPatClienteKeyTyped
+        Gym.validarAlfabeto(evt);
+    }//GEN-LAST:event_txtApPatClienteKeyTyped
+
+    private void txtApMatClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApMatClienteKeyReleased
+        Gym.validarCamposVacios(txtApMatCliente, labelCampoReq2);
+        Gym.habilitarBoton(txtApMatCliente, btnRealizarIns);
+    }//GEN-LAST:event_txtApMatClienteKeyReleased
+
+    private void txtApMatClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApMatClienteKeyTyped
+        Gym.validarAlfabeto(evt);
+    }//GEN-LAST:event_txtApMatClienteKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -129,7 +211,13 @@ public class Inscripcion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel labelCampoReq;
+    private javax.swing.JLabel labelCampoReq1;
+    private javax.swing.JLabel labelCampoReq2;
+    private javax.swing.JTextField txtApMatCliente;
+    private javax.swing.JTextField txtApPatCliente;
     private javax.swing.JTextField txtNomCliente;
     // End of variables declaration//GEN-END:variables
 }
