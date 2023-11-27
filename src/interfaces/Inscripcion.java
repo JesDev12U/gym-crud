@@ -4,13 +4,14 @@
  */
 package interfaces;
 import gym.*;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author jesus
  */
 public class Inscripcion extends javax.swing.JInternalFrame {
-
+    private javax.swing.JTextField arrayTxt[];
     /**
      * Creates new form Inscripcion
      */
@@ -20,8 +21,22 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         arrayLbl[0] = labelCampoReq;
         arrayLbl[1] = labelCampoReq1;
         arrayLbl[2] = labelCampoReq2;
+        arrayTxt = new javax.swing.JTextField[3];
+        arrayTxt[0] = txtNomCliente;
+        arrayTxt[1] = txtApPatCliente;
+        arrayTxt[2] = txtApMatCliente;
         btnRealizarIns.setEnabled(false);
         Gym.iniciarForm(arrayLbl);
+        labelCarga.setVisible(false);
+    }
+    
+    private void habilitarBoton(){
+        if(txtNomCliente.getText().isEmpty() || txtApPatCliente.getText().isEmpty()
+                || txtApMatCliente.getText().isEmpty()){
+            btnRealizarIns.setEnabled(false);
+        } else{
+            btnRealizarIns.setEnabled(true);
+        }
     }
     
     /**
@@ -46,6 +61,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         txtApMatCliente = new javax.swing.JTextField();
         labelCampoReq1 = new javax.swing.JLabel();
         labelCampoReq2 = new javax.swing.JLabel();
+        labelCarga = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -72,6 +88,11 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
         btnRealizarIns.setFont(new java.awt.Font("Dialog", 0, 20)); // NOI18N
         btnRealizarIns.setText("Realizar inscripción");
+        btnRealizarIns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRealizarInsActionPerformed(evt);
+            }
+        });
 
         labelCampoReq.setForeground(new java.awt.Color(255, 0, 0));
 
@@ -101,64 +122,73 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
         labelCampoReq2.setForeground(new java.awt.Color(255, 0, 0));
 
+        labelCarga.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cargando.gif"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtApMatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtApPatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNomCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(labelCampoReq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtApMatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtApPatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtNomCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(labelCampoReq2, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(labelCampoReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(labelCampoReq, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(337, 337, 337)
-                        .addComponent(jLabel1)))
+                                    .addComponent(labelCampoReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelCampoReq, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
+                                .addComponent(labelCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(80, 80, 80)))))
                 .addGap(51, 51, 51))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(337, 337, 337)
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtNomCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelCampoReq, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtApPatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(txtNomCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelCampoReq, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(txtApPatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(labelCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(labelCampoReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,7 +201,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 49, Short.MAX_VALUE))
+                .addGap(0, 132, Short.MAX_VALUE))
         );
 
         pack();
@@ -179,30 +209,55 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
     private void txtNomClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomClienteKeyTyped
         Gym.validarAlfabeto(evt);
+
     }//GEN-LAST:event_txtNomClienteKeyTyped
 
     private void txtNomClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomClienteKeyReleased
-        Gym.validarCamposVacios(txtNomCliente, labelCampoReq);
-        Gym.habilitarBoton(txtNomCliente, btnRealizarIns);
+        Gym.validarCamposVacios(txtNomCliente, labelCampoReq );
+        habilitarBoton();
     }//GEN-LAST:event_txtNomClienteKeyReleased
 
     private void txtApPatClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApPatClienteKeyReleased
         Gym.validarCamposVacios(txtApPatCliente, labelCampoReq1);
-        Gym.habilitarBoton(txtApPatCliente, btnRealizarIns);
+        habilitarBoton();
     }//GEN-LAST:event_txtApPatClienteKeyReleased
 
     private void txtApPatClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApPatClienteKeyTyped
         Gym.validarAlfabeto(evt);
+
     }//GEN-LAST:event_txtApPatClienteKeyTyped
 
     private void txtApMatClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApMatClienteKeyReleased
         Gym.validarCamposVacios(txtApMatCliente, labelCampoReq2);
-        Gym.habilitarBoton(txtApMatCliente, btnRealizarIns);
+        habilitarBoton();
     }//GEN-LAST:event_txtApMatClienteKeyReleased
 
     private void txtApMatClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApMatClienteKeyTyped
         Gym.validarAlfabeto(evt);
     }//GEN-LAST:event_txtApMatClienteKeyTyped
+
+    public void proceso(){
+        try {
+            btnRealizarIns.setEnabled(false);
+            Thread.sleep(3000);
+            btnRealizarIns.setEnabled(true);
+        } catch (InterruptedException ex) {}
+    }
+    
+    private void btnRealizarInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarInsActionPerformed
+        new Thread(){
+            @Override
+            public void run(){
+                labelCarga.setVisible(true);
+                proceso();
+                labelCarga.setVisible(false);
+                JOptionPane.showMessageDialog(null, 
+                        "Inscripción realizada correctamente", 
+                        "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }.start();
+        
+    }//GEN-LAST:event_btnRealizarInsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -216,6 +271,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelCampoReq;
     private javax.swing.JLabel labelCampoReq1;
     private javax.swing.JLabel labelCampoReq2;
+    private javax.swing.JLabel labelCarga;
     private javax.swing.JTextField txtApMatCliente;
     private javax.swing.JTextField txtApPatCliente;
     private javax.swing.JTextField txtNomCliente;

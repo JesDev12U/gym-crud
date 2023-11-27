@@ -32,14 +32,6 @@ public class Gym {
         }
     }
 
-    public static void habilitarBoton(javax.swing.JTextField txt, javax.swing.JButton btn) {
-        if (txt.getText().equals("")) {
-            btn.setEnabled(false);
-        } else {
-            btn.setEnabled(true);
-        }
-    }
-
     /**
      * @param args the command line arguments
      */
