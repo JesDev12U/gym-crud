@@ -22,6 +22,8 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     Thread t1;
     Inscripcion inscripcionForm;
     CobrarMensualidad cobrarMensualidad;
+    CobrarSemana cobrarSemana;
+    CobrarVisita cobrarVisita;
     /**
      * Creates new form Principal
      */
@@ -153,9 +155,19 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         jMenu2.add(jMenuItem1);
 
         jMenuItem2.setText("Semana");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem2);
 
         jMenuItem3.setText("Visita");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
@@ -220,6 +232,20 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         }
         centrarVentanaInterna(cobrarMensualidad);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        if(!(cobrarSemana instanceof CobrarSemana)){
+            cobrarSemana = new CobrarSemana();
+        }
+        centrarVentanaInterna(cobrarSemana);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        if(!(cobrarVisita instanceof CobrarVisita)){
+            cobrarVisita = new CobrarVisita();
+        }
+        centrarVentanaInterna(cobrarVisita);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
