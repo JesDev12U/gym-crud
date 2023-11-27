@@ -4,19 +4,48 @@
  */
 package interfaces;
 
+import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
+//import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
 /**
  *
  * @author jesus
  */
 public class CobrarMensualidad extends javax.swing.JInternalFrame {
-
+    private TableRowSorter filtroTabla;
     /**
      * Creates new form CobrarMensualidad
      */
     public CobrarMensualidad() {
         initComponents();
+        labelCarga.setVisible(false);
+        btnRealizarCobro.setEnabled(false);
+        tablaClientes.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(MouseEvent Mouse_evt){
+                //JTable table = (JTable) Mouse_evt.getSource();
+                //Point point = Mouse_evt.getPoint();
+                //int row = table.rowAtPoint(point);
+                if(Mouse_evt.getClickCount() == 1){
+                    txtFolio.setText(tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
+                    btnRealizarCobro.setEnabled(true);
+                }
+            }
+        });
     }
 
+    private void filtrarTabla(){
+        int columnaTabla = 1; //Columna del nombre
+        filtroTabla.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(), columnaTabla));
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,15 +57,15 @@ public class CobrarMensualidad extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtFiltro = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaClientes = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtFolio = new javax.swing.JTextField();
         jSpinner1 = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        btnRealizarCobro = new javax.swing.JButton();
+        labelCarga = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -48,10 +77,17 @@ public class CobrarMensualidad extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nombre");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        txtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFiltroKeyTyped(evt);
+            }
+        });
+
+        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null}
+                {"Cl001", "Jesus Antonio Lopez Bandala"},
+                {"Cl002", "Roberto Perez Perez"},
+                {"Cl003", "Juan Velazco Mendez"}
             },
             new String [] {
                 "Número de folio", "Nombre"
@@ -65,18 +101,23 @@ public class CobrarMensualidad extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaClientes);
 
         jLabel3.setText("Número de folio");
 
-        jTextField2.setEnabled(false);
+        txtFolio.setEnabled(false);
 
         jLabel4.setText("Monto a pagar");
 
-        jButton1.setFont(new java.awt.Font("Dialog", 0, 20)); // NOI18N
-        jButton1.setText("Registrar cobro");
+        btnRealizarCobro.setFont(new java.awt.Font("Dialog", 0, 20)); // NOI18N
+        btnRealizarCobro.setText("Registrar cobro");
+        btnRealizarCobro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRealizarCobroActionPerformed(evt);
+            }
+        });
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cargando.gif"))); // NOI18N
+        labelCarga.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cargando.gif"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,7 +132,7 @@ public class CobrarMensualidad extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel2)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -99,12 +140,12 @@ public class CobrarMensualidad extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel4))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)
+                                .addComponent(btnRealizarCobro)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel5)
+                                .addComponent(labelCarga)
                                 .addGap(39, 39, 39))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(298, 298, 298)
@@ -119,43 +160,77 @@ public class CobrarMensualidad extends javax.swing.JInternalFrame {
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelCarga, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel3)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jButton1)))
+                        .addComponent(btnRealizarCobro)))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyTyped
+        txtFiltro.addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyReleased(final KeyEvent e){
+                String txt = (txtFiltro.getText());
+                txtFiltro.setText(txt);
+                filtrarTabla();
+            }
+        });
+        filtroTabla = new TableRowSorter(tablaClientes.getModel());
+        tablaClientes.setRowSorter(filtroTabla);
+    }//GEN-LAST:event_txtFiltroKeyTyped
+
+    private void btnRealizarCobroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarCobroActionPerformed
+        new Thread(){
+            @Override
+            public void run(){
+                labelCarga.setVisible(true);
+                proceso();
+                labelCarga.setVisible(false);
+                JOptionPane.showMessageDialog(null, 
+                        "Cobro realizado correctamente", 
+                        "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }.start();
+    }//GEN-LAST:event_btnRealizarCobroActionPerformed
+
+    public void proceso(){
+        try {
+            btnRealizarCobro.setEnabled(false);
+            Thread.sleep(3000);
+            btnRealizarCobro.setEnabled(true);
+        } catch (InterruptedException ex) {}
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnRealizarCobro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel labelCarga;
+    private javax.swing.JTable tablaClientes;
+    private javax.swing.JTextField txtFiltro;
+    private javax.swing.JTextField txtFolio;
     // End of variables declaration//GEN-END:variables
 }
