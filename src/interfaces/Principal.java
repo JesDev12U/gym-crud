@@ -129,7 +129,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
             .addGap(0, 291, Short.MAX_VALUE)
         );
 
-        btnMenuInscripcion.setText("Inscipción");
+        btnMenuInscripcion.setText("Inscripción");
 
         jMenuItem8.setText("Inscripción");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {

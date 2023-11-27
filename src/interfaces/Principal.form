@@ -6,7 +6,7 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="btnMenuInscripcion">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Inscipci&#xf3;n"/>
+            <Property name="text" type="java.lang.String" value="Inscripci&#xf3;n"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
