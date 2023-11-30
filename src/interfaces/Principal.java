@@ -24,6 +24,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     CobrarMensualidad cobrarMensualidad;
     CobrarSemana cobrarSemana;
     CobrarVisita cobrarVisita;
+    Inventario inventario;
     /**
      * Creates new form Principal
      */
@@ -112,6 +113,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -120,6 +122,8 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        labelFechaHora.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout desktopPaneLayout = new javax.swing.GroupLayout(desktopPane);
         desktopPane.setLayout(desktopPaneLayout);
@@ -173,6 +177,15 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Inventario");
+
+        jMenuItem9.setText("Inventario");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem9);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Venta");
@@ -247,6 +260,13 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         centrarVentanaInterna(cobrarVisita);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        if(!(inventario instanceof Inventario)){
+            inventario = new Inventario();
+        }
+        centrarVentanaInterna(inventario);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -298,6 +318,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JLabel labelFechaHora;
     // End of variables declaration//GEN-END:variables
 }

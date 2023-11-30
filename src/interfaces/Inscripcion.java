@@ -237,7 +237,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         Gym.validarAlfabeto(evt);
     }//GEN-LAST:event_txtApMatClienteKeyTyped
 
-    public void proceso(){
+    private void proceso(){
         try {
             btnRealizarIns.setEnabled(false);
             Thread.sleep(3000);
