@@ -27,7 +27,7 @@ create table Clientes(
 );
 
 create table Visitas(
-    ID_Vis char PRIMARY KEY,
+    ID_Vis varchar(5) PRIMARY KEY,
     Nom_Vis varchar(30) not null,
     ApPat_Vis varchar(15) not null,
     ApMat_Vis varchar(15) not null,

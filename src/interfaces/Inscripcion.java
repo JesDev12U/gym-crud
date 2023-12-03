@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class Inscripcion extends javax.swing.JInternalFrame {
     final double costoInscripcionMensual = 3000;
     final double costoInscripcionSemanal = 1500;
+    final double costoVisita = 500;
     private javax.swing.JTextField arrayTxt[];
     /**
      * Creates new form Inscripcion
@@ -380,6 +381,52 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         return filasAfectadas;
     }
     
+    private int ejecutarInscripcionVisita(){
+        int filasAfectadas = 0;
+        Connection conexion = null;
+        try{
+            if(MySQLConnection.conectarBD()){
+                conexion = MySQLConnection.getConexion();
+                conexion.setAutoCommit(false);
+                int idPago = Gym.registrarPago("Inscripcion visita", cmbxFormaPago, costoVisita);
+                String insertVisitaQuery = "INSERT INTO Visitas (ID_Vis, Nom_Vis, ApPat_Vis, ApMat_Vis, ID_Pago) " + 
+                        "VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement statementVisita = conexion.prepareStatement(insertVisitaQuery);
+                int sigID = Gym.obtenerUltimoID("ID_Vis", "Visitas", "4");
+                LocalDate fechaActual = LocalDate.now();
+                int year = fechaActual.getYear() % 100;
+                String idVisita = "V" + year;
+                if(sigID < 10){
+                    idVisita += "0" + sigID;
+                } else{
+                    idVisita += sigID;
+                }
+                statementVisita.setString(1, idVisita);
+                statementVisita.setString(2, txtNomCliente.getText());
+                statementVisita.setString(3, txtApPatCliente.getText());
+                statementVisita.setString(4, txtApMatCliente.getText());
+                statementVisita.setInt(5, idPago);
+                statementVisita.executeUpdate();
+                
+                conexion.commit();
+                conexion.setAutoCommit(true);
+                filasAfectadas = 1;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la transacción de inserción.");
+            e.printStackTrace();
+            if (conexion != null) {
+                try {
+                    conexion.rollback(); // Hacer rollback en caso de error
+                    conexion.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return filasAfectadas;
+    }
+    
     private void btnRealizarInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarInsActionPerformed
         new Thread(){
             @Override
@@ -410,7 +457,14 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                         }
                     }
                     case 2 ->{
-                        
+                        resultado = ejecutarInscripcionVisita();
+                        if(resultado > 0){
+                            JOptionPane.showMessageDialog(null, "Inscripcion de visita realizada correctamente", 
+                                    "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        } else{
+                            JOptionPane.showMessageDialog(null, "Error al hacer la inscripcion de visita", 
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
                 
