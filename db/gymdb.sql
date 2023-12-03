@@ -3,7 +3,7 @@ use GYM;
 
 create table Pagos(
     ID_Pago int PRIMARY KEY auto_increment,
-    Desc_Pago varchar(15) not null,
+    Desc_Pago varchar(30) not null,
     Fec_Pago date not null,
     Form_Pago varchar(10) not null,
     Mont_Pago double not null
@@ -44,7 +44,7 @@ create table Mensualidades(
 );
 
 create table ClienteSemanal(
-    ID_Sem char PRIMARY KEY,
+    ID_Sem varchar(5) PRIMARY KEY,
     Nom_Sem varchar(30) not null,
     ApPat_Sem varchar(15) not null,
     ApMat_Sem varchar(15) not null,

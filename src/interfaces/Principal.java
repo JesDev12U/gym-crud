@@ -263,6 +263,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         btnMenuCobros.add(jMenuItem2);
 
         jMenuItem3.setText("Visita");
+        jMenuItem3.setEnabled(false);
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -333,13 +334,6 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        if(!(inscripcionForm instanceof Inscripcion)){
-            inscripcionForm = new Inscripcion();
-        }
-        centrarVentanaInterna(inscripcionForm);
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         if(!(cobrarMensualidad instanceof CobrarMensualidad)){
             cobrarMensualidad = new CobrarMensualidad();
@@ -378,6 +372,13 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     private void btnReintentarConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReintentarConexionActionPerformed
         hiloConexion();
     }//GEN-LAST:event_btnReintentarConexionActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        if(!(inscripcionForm instanceof Inscripcion)){
+            inscripcionForm = new Inscripcion();
+        }
+        centrarVentanaInterna(inscripcionForm);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
      * @param args the command line arguments

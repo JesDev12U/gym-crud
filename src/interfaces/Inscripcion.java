@@ -6,13 +6,15 @@ package interfaces;
 import gym.*;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import java.time.LocalDate;
 
 /**
  *
  * @author jesus
  */
 public class Inscripcion extends javax.swing.JInternalFrame {
-    final double costoInscripcion = 3000;
+    final double costoInscripcionMensual = 3000;
+    final double costoInscripcionSemanal = 1500;
     private javax.swing.JTextField arrayTxt[];
     /**
      * Creates new form Inscripcion
@@ -64,6 +66,8 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         labelCampoReq1 = new javax.swing.JLabel();
         labelCampoReq2 = new javax.swing.JLabel();
         labelCarga = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        cmbxTipoCliente = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -126,6 +130,10 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
         labelCarga.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cargando.gif"))); // NOI18N
 
+        jLabel6.setText("Tipo de cliente");
+
+        cmbxTipoCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mensual", "Semanal", "Visita" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,23 +157,27 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                                 .addComponent(txtNomCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(labelCampoReq1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(labelCampoReq, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(labelCampoReq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(66, 66, 66)
-                                .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(137, 137, 137))
+                                .addGap(113, 113, 113)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelCampoReq1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelCampoReq, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(84, 84, 84)
+                                .addComponent(labelCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(90, 90, 90))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51))))
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbxTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(337, 337, 337)
                 .addComponent(jLabel1)
@@ -177,9 +189,10 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelCampoReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
                                 .addGap(32, 32, 32)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel2)
@@ -188,22 +201,24 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(txtApPatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(labelCampoReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(txtApMatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(labelCampoReq2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtApPatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5)
+                                .addComponent(txtApMatCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(labelCampoReq2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(cmbxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(cmbxTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 22, Short.MAX_VALUE))
         );
 
@@ -248,28 +263,14 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         } catch (InterruptedException ex) {}
     }*/
     
-    private int ejecutarInscripcion(){
-        Connection conexion = null;
+    private int ejecutarInscripcionMensual(){ 
         int filasAfectadas = 0;
+        Connection conexion = null;
         try{
             if(MySQLConnection.conectarBD()){
                 conexion = MySQLConnection.getConexion();
                 conexion.setAutoCommit(false);
-                String insertPagoQuery = "INSERT INTO Pagos (ID_Pago, Desc_Pago, Fec_Pago, Form_Pago, Mont_Pago) "+
-                        "VALUES (DEFAULT, ?, ?, ?, ?)";
-                PreparedStatement statementPago = conexion.prepareStatement(insertPagoQuery, Statement.RETURN_GENERATED_KEYS);
-                statementPago.setString(1, "Inscripcion");
-                statementPago.setDate(2, MySQLConnection.getFechaActual());
-                statementPago.setString(3, cmbxFormaPago.getSelectedItem().toString());
-                statementPago.setDouble(4, costoInscripcion);
-                statementPago.executeUpdate();
-
-                //Obtener el ID_Pago generado
-                ResultSet generatedKeys = statementPago.getGeneratedKeys();
-                int idPago = -1;
-                if(generatedKeys.next()){
-                    idPago = generatedKeys.getInt(1); //Obtener el ID generado automaticamente
-                }
+                int idPago = Gym.registrarPago("Inscripcion Mensual", cmbxFormaPago, costoInscripcionMensual);
                 String insertInscripcionQuery = "INSERT INTO Inscripciones (ID_Ins, Fec_Ins, ID_Pago) " + 
                         "VALUES (DEFAULT, ?, ?)";
                 PreparedStatement statementInscripcion = conexion.prepareStatement(insertInscripcionQuery, Statement.RETURN_GENERATED_KEYS);
@@ -281,10 +282,10 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                 ResultSet generatedKeysInscripcion = statementInscripcion.getGeneratedKeys();
                 int idIns = -1;
                 if(generatedKeysInscripcion.next()){
-                    idIns = generatedKeys.getInt(1);
+                    idIns = generatedKeysInscripcion.getInt(1);
                 }
                 //Obtener el ultimo ID del Cliente
-                int sigID = Gym.obtenerUltimoID("ID_Cli", "Clientes");
+                int sigID = Gym.obtenerUltimoID("ID_Cli", "Clientes", "3");
                 
                 String idCliente = "Cl";
                 if(sigID < 10){
@@ -332,21 +333,87 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         return filasAfectadas;
     }
     
+    private int ejecutarInscripcionSemanal(){
+        int filasAfectadas = 0;
+        Connection conexion = null;
+        try{
+            if(MySQLConnection.conectarBD()){
+                conexion = MySQLConnection.getConexion();
+                conexion.setAutoCommit(false);
+                int idPago = Gym.registrarPago("Inscripcion semanal", cmbxFormaPago, costoInscripcionSemanal);
+                String insertClienteSemanalQuery = "INSERT INTO ClienteSemanal (ID_Sem, Nom_Sem, ApPat_Sem, ApMat_Sem, ID_Pago) " + 
+                        "VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement statementClienteSemanal = conexion.prepareStatement(insertClienteSemanalQuery);
+                int sigID = Gym.obtenerUltimoID("ID_Sem", "ClienteSemanal", "4");
+                LocalDate fechaActual = LocalDate.now();
+                int year = fechaActual.getYear() % 100;
+                String idClienteSemanal = "S" + year;
+                if(sigID < 10){
+                    idClienteSemanal += "0" + sigID;
+                } else{
+                    idClienteSemanal += sigID;
+                }
+                //System.out.println(idClienteSemanal + " " + year + " " + sigID);
+                statementClienteSemanal.setString(1, idClienteSemanal);
+                statementClienteSemanal.setString(2, txtNomCliente.getText());
+                statementClienteSemanal.setString(3, txtApPatCliente.getText());
+                statementClienteSemanal.setString(4, txtApMatCliente.getText());
+                statementClienteSemanal.setInt(5, idPago);
+                statementClienteSemanal.executeUpdate();
+                
+                conexion.commit();
+                conexion.setAutoCommit(true);
+                filasAfectadas = 1;
+            }
+        }catch (SQLException e) {
+            System.out.println("Error al ejecutar la transacción de inserción.");
+            e.printStackTrace();
+            if (conexion != null) {
+                try {
+                    conexion.rollback(); // Hacer rollback en caso de error
+                    conexion.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return filasAfectadas;
+    }
+    
     private void btnRealizarInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarInsActionPerformed
         new Thread(){
             @Override
             public void run(){
                 labelCarga.setVisible(true);
-                int resultado = ejecutarInscripcion();
-                if (resultado > 0) {
-                    JOptionPane.showMessageDialog(null, 
-                        "Inscripción realizada correctamente", 
-                        "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, 
-                        "Error al hacer la inscripcion", 
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                int resultado = 0;
+                switch(cmbxTipoCliente.getSelectedIndex()){
+                    case 0 ->{
+                        resultado = ejecutarInscripcionMensual();
+                        if (resultado > 0) {
+                            JOptionPane.showMessageDialog(null, 
+                                "Inscripción Mensual realizada correctamente", 
+                                "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, 
+                                "Error al hacer la inscripcion mensual", 
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    case 1 ->{
+                        resultado = ejecutarInscripcionSemanal();
+                        if(resultado > 0){
+                            JOptionPane.showMessageDialog(null, "Inscripcion semanal realizada correctamente", 
+                                    "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        } else{
+                            JOptionPane.showMessageDialog(null, "Error al hacer la inscripcion semanal",
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    case 2 ->{
+                        
+                    }
                 }
+                
 
                 MySQLConnection.cerrarConexion();
                 labelCarga.setVisible(false);
@@ -360,11 +427,13 @@ public class Inscripcion extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRealizarIns;
     private javax.swing.JComboBox<String> cmbxFormaPago;
+    private javax.swing.JComboBox<String> cmbxTipoCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel labelCampoReq;
     private javax.swing.JLabel labelCampoReq1;
     private javax.swing.JLabel labelCampoReq2;

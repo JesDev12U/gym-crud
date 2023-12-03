@@ -85,17 +85,55 @@ public class Gym {
         }
     }
     
-    public static int obtenerUltimoID(String id, String tabla) throws SQLException{
+    public static int obtenerUltimoID(String id, String tabla, String num) throws SQLException{
         Connection conexion = MySQLConnection.getConexion();
         Statement statementIDCliente = conexion.createStatement();
         ResultSet resultSetIDCliente = statementIDCliente.executeQuery(
-        "SELECT MAX(CONVERT(SUBSTRING(" + id + ", 3), UNSIGNED INTEGER)) AS MaxID FROM " + tabla);
+        "SELECT MAX(CONVERT(SUBSTRING(" + id + ", " + num + "), UNSIGNED INTEGER)) AS MaxID FROM " + tabla);
         int sigID = 1;
         if(resultSetIDCliente.next()){
             sigID = resultSetIDCliente.getInt("MaxID");
             sigID++;
         }
         return sigID;
+    }
+    
+    public static int registrarPago(String Desc_Pago, javax.swing.JComboBox cmbxFormaPago, double monto){
+        Connection conexion = null;
+        int idPago = -1;
+        try{
+            if(MySQLConnection.conectarBD()){
+                conexion = MySQLConnection.getConexion();
+                conexion.setAutoCommit(false);
+                String insertPagoQuery = "INSERT INTO Pagos (ID_Pago, Desc_Pago, Fec_Pago, Form_Pago, Mont_Pago) "+
+                        "VALUES (DEFAULT, ?, ?, ?, ?)";
+                PreparedStatement statementPago = conexion.prepareStatement(insertPagoQuery, Statement.RETURN_GENERATED_KEYS);
+                statementPago.setString(1, Desc_Pago);
+                statementPago.setDate(2, MySQLConnection.getFechaActual());
+                statementPago.setString(3, cmbxFormaPago.getSelectedItem().toString());
+                statementPago.setDouble(4, monto);
+                statementPago.executeUpdate();
+
+                //Obtener el ID_Pago generado
+                ResultSet generatedKeys = statementPago.getGeneratedKeys();
+                
+                if(generatedKeys.next()){
+                    idPago = generatedKeys.getInt(1); //Obtener el ID generado automaticamente
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la transacción de inserción.");
+            e.printStackTrace();
+            if (conexion != null) {
+                try {
+                    conexion.rollback(); // Hacer rollback en caso de error
+                    conexion.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return idPago;
     }
     
     /**
