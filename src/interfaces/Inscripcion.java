@@ -5,12 +5,14 @@
 package interfaces;
 import gym.*;
 import javax.swing.JOptionPane;
+import java.sql.*;
 
 /**
  *
  * @author jesus
  */
 public class Inscripcion extends javax.swing.JInternalFrame {
+    final double costoInscripcion = 3000;
     private javax.swing.JTextField arrayTxt[];
     /**
      * Creates new form Inscripcion
@@ -52,7 +54,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         txtNomCliente = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbxFormaPago = new javax.swing.JComboBox<>();
         btnRealizarIns = new javax.swing.JButton();
         labelCampoReq = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -82,9 +84,9 @@ public class Inscripcion extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel3.setText("Tipo de pago anual");
+        jLabel3.setText("Forma de pago");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mensual", "Semanal", "Visita" }));
+        cmbxFormaPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Tarjeta", " " }));
 
         btnRealizarIns.setFont(new java.awt.Font("Dialog", 0, 20)); // NOI18N
         btnRealizarIns.setText("Realizar inscripción");
@@ -162,7 +164,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(51, 51, 51))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(337, 337, 337)
@@ -191,7 +193,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(labelCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(labelCampoReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -201,8 +203,8 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 28, Short.MAX_VALUE))
+                    .addComponent(cmbxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 22, Short.MAX_VALUE))
         );
 
         pack();
@@ -210,7 +212,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
     private void txtNomClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomClienteKeyTyped
         Gym.validarAlfabeto(evt);
-
+        Gym.validarCantidadCaracteres(txtNomCliente, evt, 30);
     }//GEN-LAST:event_txtNomClienteKeyTyped
 
     private void txtNomClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomClienteKeyReleased
@@ -225,7 +227,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
     private void txtApPatClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApPatClienteKeyTyped
         Gym.validarAlfabeto(evt);
-
+        Gym.validarCantidadCaracteres(txtApPatCliente, evt, 15);
     }//GEN-LAST:event_txtApPatClienteKeyTyped
 
     private void txtApMatClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApMatClienteKeyReleased
@@ -235,14 +237,99 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
     private void txtApMatClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApMatClienteKeyTyped
         Gym.validarAlfabeto(evt);
+        Gym.validarCantidadCaracteres(txtApMatCliente, evt, 15);
     }//GEN-LAST:event_txtApMatClienteKeyTyped
 
-    private void proceso(){
+    /*private void proceso(){
         try {
             btnRealizarIns.setEnabled(false);
             Thread.sleep(3000);
             btnRealizarIns.setEnabled(true);
         } catch (InterruptedException ex) {}
+    }*/
+    
+    private int ejecutarInscripcion(){
+        Connection conexion = null;
+        int filasAfectadas = 0;
+        try{
+            if(MySQLConnection.conectarBD()){
+                conexion = MySQLConnection.getConexion();
+                conexion.setAutoCommit(false);
+                String insertPagoQuery = "INSERT INTO Pagos (ID_Pago, Desc_Pago, Fec_Pago, Form_Pago, Mont_Pago) "+
+                        "VALUES (DEFAULT, ?, ?, ?, ?)";
+                PreparedStatement statementPago = conexion.prepareStatement(insertPagoQuery, Statement.RETURN_GENERATED_KEYS);
+                statementPago.setString(1, "Inscripcion");
+                statementPago.setDate(2, MySQLConnection.getFechaActual());
+                statementPago.setString(3, cmbxFormaPago.getSelectedItem().toString());
+                statementPago.setDouble(4, costoInscripcion);
+                statementPago.executeUpdate();
+
+                //Obtener el ID_Pago generado
+                ResultSet generatedKeys = statementPago.getGeneratedKeys();
+                int idPago = -1;
+                if(generatedKeys.next()){
+                    idPago = generatedKeys.getInt(1); //Obtener el ID generado automaticamente
+                }
+                String insertInscripcionQuery = "INSERT INTO Inscripciones (ID_Ins, Fec_Ins, ID_Pago) " + 
+                        "VALUES (DEFAULT, ?, ?)";
+                PreparedStatement statementInscripcion = conexion.prepareStatement(insertInscripcionQuery, Statement.RETURN_GENERATED_KEYS);
+                statementInscripcion.setDate(1, MySQLConnection.getFechaActual());
+                statementInscripcion.setInt(2, idPago);
+                statementInscripcion.executeUpdate();
+
+                //Obtener el ID_Ins generado
+                ResultSet generatedKeysInscripcion = statementInscripcion.getGeneratedKeys();
+                int idIns = -1;
+                if(generatedKeysInscripcion.next()){
+                    idIns = generatedKeys.getInt(1);
+                }
+                //Obtener el ultimo ID del Cliente
+                Statement statementIDCliente = conexion.createStatement();
+                ResultSet resultSetIDCliente = statementIDCliente.executeQuery(
+                "SELECT MAX(CONVERT(SUBSTRING(ID_Cli, 3), UNSIGNED INTEGER)) AS MaxID FROM Clientes");
+                int sigID = 1;
+                if(resultSetIDCliente.next()){
+                    sigID = resultSetIDCliente.getInt("MaxID");
+                    sigID++;
+                }
+                
+                String idCliente = "Cl";
+                if(sigID < 10){
+                    idCliente += "00" + sigID;
+                } else if(sigID < 100){
+                    idCliente += "0" + sigID;
+                } else{
+                    idCliente += sigID;
+                }
+                
+                String insertClientesQuery = "INSERT INTO Clientes (ID_Cli, Nom_Cli, ApPat_Cli, ApMat_Cli, Est_Cli, ID_Ins) " + 
+                        "VALUES (?, ?, ?, ?, ?, ?)";
+                PreparedStatement statementClientes = conexion.prepareStatement(insertClientesQuery);
+                statementClientes.setString(1, idCliente);
+                statementClientes.setString(2, txtNomCliente.getText());
+                statementClientes.setString(3, txtApPatCliente.getText());
+                statementClientes.setString(4, txtApMatCliente.getText());
+                statementClientes.setString(5, "Activo");
+                statementClientes.setInt(6, idIns);
+                statementClientes.executeUpdate();
+
+                conexion.commit();
+                conexion.setAutoCommit(true);
+                filasAfectadas = 1;
+            }  
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la transacción de inserción.");
+            e.printStackTrace();
+            if (conexion != null) {
+                try {
+                    conexion.rollback(); // Hacer rollback en caso de error
+                    conexion.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return filasAfectadas;
     }
     
     private void btnRealizarInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarInsActionPerformed
@@ -250,11 +337,20 @@ public class Inscripcion extends javax.swing.JInternalFrame {
             @Override
             public void run(){
                 labelCarga.setVisible(true);
-                proceso();
-                labelCarga.setVisible(false);
-                JOptionPane.showMessageDialog(null, 
+                int resultado = ejecutarInscripcion();
+                if (resultado > 0) {
+                    JOptionPane.showMessageDialog(null, 
                         "Inscripción realizada correctamente", 
                         "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, 
+                        "Error al hacer la inscripcion", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                MySQLConnection.cerrarConexion();
+                labelCarga.setVisible(false);
+                
             }
         }.start();
         
@@ -263,7 +359,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRealizarIns;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cmbxFormaPago;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

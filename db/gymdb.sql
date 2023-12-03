@@ -17,7 +17,7 @@ create table Inscripciones(
 );
 
 create table Clientes(
-    ID_Cli char PRIMARY KEY,
+    ID_Cli varchar(5) PRIMARY KEY,
     Nom_Cli varchar(30) not null,
     ApPat_Cli varchar(15) not null,
     ApMat_Cli varchar(15) not null,

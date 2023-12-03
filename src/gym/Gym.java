@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -62,8 +63,9 @@ public class Gym {
 
     public static void validarAlfabeto(java.awt.event.KeyEvent evento) {
         //Validacion A-Z a-z
-        if (!(evento.getKeyChar() >= 65 && evento.getKeyChar() <= 90
-                || evento.getKeyChar() >= 97 && evento.getKeyChar() <= 122)) {
+        if (!((evento.getKeyChar() >= 65 && evento.getKeyChar() <= 90)
+                || (evento.getKeyChar() >= 97 && evento.getKeyChar() <= 122)
+                || (evento.getKeyChar() == 32))) {
             evento.consume();
         }
     }
@@ -75,7 +77,14 @@ public class Gym {
             lbl.setText("");
         }
     }
-
+    
+    public static void validarCantidadCaracteres(javax.swing.JTextField txt, java.awt.event.KeyEvent evento
+            , int cantidad){
+        if(txt.getText().length() >= cantidad){
+            evento.consume();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */

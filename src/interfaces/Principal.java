@@ -4,7 +4,6 @@
  */
 package interfaces;
 
-import com.jtattoo.plaf.mcwin.McWinLookAndFeel;
 import com.jtattoo.plaf.noire.NoireLookAndFeel;
 import java.util.Calendar;
 import java.util.Date;
