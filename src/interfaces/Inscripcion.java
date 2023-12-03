@@ -284,14 +284,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                     idIns = generatedKeys.getInt(1);
                 }
                 //Obtener el ultimo ID del Cliente
-                Statement statementIDCliente = conexion.createStatement();
-                ResultSet resultSetIDCliente = statementIDCliente.executeQuery(
-                "SELECT MAX(CONVERT(SUBSTRING(ID_Cli, 3), UNSIGNED INTEGER)) AS MaxID FROM Clientes");
-                int sigID = 1;
-                if(resultSetIDCliente.next()){
-                    sigID = resultSetIDCliente.getInt("MaxID");
-                    sigID++;
-                }
+                int sigID = Gym.obtenerUltimoID("ID_Cli", "Clientes");
                 
                 String idCliente = "Cl";
                 if(sigID < 10){
@@ -313,6 +306,13 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                 statementClientes.setInt(6, idIns);
                 statementClientes.executeUpdate();
 
+                String insertMensualidadQuery = "INSERT INTO Mensualidades (ID_Men, ID_Cli, ID_Pago) " + 
+                        "VALUES (DEFAULT, ?, ?)";
+                PreparedStatement statementMensualidad = conexion.prepareCall(insertMensualidadQuery);
+                statementMensualidad.setString(1, idCliente);
+                statementMensualidad.setInt(2, idPago);
+                statementMensualidad.executeUpdate();
+                
                 conexion.commit();
                 conexion.setAutoCommit(true);
                 filasAfectadas = 1;

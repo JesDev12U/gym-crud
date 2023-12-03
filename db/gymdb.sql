@@ -37,7 +37,7 @@ create table Visitas(
 
 create table Mensualidades(
     ID_Men int PRIMARY KEY auto_increment,
-    ID_Cli char not null,
+    ID_Cli varchar(5) not null,
     ID_Pago int not null,
     constraint fk_ID_Cli1 foreign key (ID_Cli) references Clientes (ID_Cli),
     constraint fk_ID_Pago3 foreign key (ID_Pago) references Pagos (ID_Pago) -- Cambio aquí en el nombre de la llave*/

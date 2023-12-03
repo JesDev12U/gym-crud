@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
-import java.sql.PreparedStatement;
+import java.sql.*;
 
 /**
  *
@@ -83,6 +83,19 @@ public class Gym {
         if(txt.getText().length() >= cantidad){
             evento.consume();
         }
+    }
+    
+    public static int obtenerUltimoID(String id, String tabla) throws SQLException{
+        Connection conexion = MySQLConnection.getConexion();
+        Statement statementIDCliente = conexion.createStatement();
+        ResultSet resultSetIDCliente = statementIDCliente.executeQuery(
+        "SELECT MAX(CONVERT(SUBSTRING(" + id + ", 3), UNSIGNED INTEGER)) AS MaxID FROM " + tabla);
+        int sigID = 1;
+        if(resultSetIDCliente.next()){
+            sigID = resultSetIDCliente.getInt("MaxID");
+            sigID++;
+        }
+        return sigID;
     }
     
     /**
