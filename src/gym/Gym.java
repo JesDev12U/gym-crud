@@ -37,18 +37,17 @@ public class Gym {
         });
     }
     
-    public void filtrarTabla(JTextField txtFiltro){
-        int columnaTabla = 1; //Columna del nombre
+    public void filtrarTabla(JTextField txtFiltro, int columnaTabla){
         filtroTabla.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(), columnaTabla));
     }
     
-    public void procesoFiltro(JTextField txtFiltro, JTable tablaClientes){
+    public void procesoFiltro(JTextField txtFiltro, JTable tablaClientes, int columnaTabla){
         txtFiltro.addKeyListener(new KeyAdapter(){
             @Override
             public void keyReleased(final KeyEvent e){
                 String txt = (txtFiltro.getText());
                 txtFiltro.setText(txt);
-                filtrarTabla(txtFiltro);
+                filtrarTabla(txtFiltro, columnaTabla);
             }
         });
         filtroTabla = new TableRowSorter(tablaClientes.getModel());

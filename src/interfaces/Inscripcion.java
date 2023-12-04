@@ -214,12 +214,13 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnRealizarIns, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cmbxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6)
-                        .addComponent(cmbxTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbxTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(cmbxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 22, Short.MAX_VALUE))
         );
 
@@ -342,8 +343,8 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                 conexion = MySQLConnection.getConexion();
                 conexion.setAutoCommit(false);
                 int idPago = Gym.registrarPago("Inscripcion semanal", cmbxFormaPago, costoInscripcionSemanal);
-                String insertClienteSemanalQuery = "INSERT INTO ClienteSemanal (ID_Sem, Nom_Sem, ApPat_Sem, ApMat_Sem, ID_Pago) " + 
-                        "VALUES (?, ?, ?, ?, ?)";
+                String insertClienteSemanalQuery = "INSERT INTO ClienteSemanal (ID_Sem, Nom_Sem, ApPat_Sem, ApMat_Sem, Est_Sem, ID_Pago) " + 
+                        "VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement statementClienteSemanal = conexion.prepareStatement(insertClienteSemanalQuery);
                 int sigID = Gym.obtenerUltimoID("ID_Sem", "ClienteSemanal", "4");
                 LocalDate fechaActual = LocalDate.now();
@@ -359,7 +360,8 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                 statementClienteSemanal.setString(2, txtNomCliente.getText());
                 statementClienteSemanal.setString(3, txtApPatCliente.getText());
                 statementClienteSemanal.setString(4, txtApMatCliente.getText());
-                statementClienteSemanal.setInt(5, idPago);
+                statementClienteSemanal.setString(5, "Activo");
+                statementClienteSemanal.setInt(6, idPago);
                 statementClienteSemanal.executeUpdate();
                 
                 conexion.commit();

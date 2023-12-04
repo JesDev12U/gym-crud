@@ -27,7 +27,7 @@ public class MySQLConnection {
             conexion = DriverManager.getConnection(url, usuario, contraseña);
 
             if (conexion != null) {
-                System.out.println("¡Conexión exitosa!");
+                //System.out.println("¡Conexión exitosa!");
                 return true;
             }
 

@@ -4,7 +4,17 @@
  */
 package interfaces;
 
+import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
+import com.jtattoo.plaf.aero.AeroLookAndFeel;
+import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
+import com.jtattoo.plaf.bernstein.BernsteinLookAndFeel;
+import com.jtattoo.plaf.fast.FastLookAndFeel;
+import com.jtattoo.plaf.luna.LunaLookAndFeel;
+import com.jtattoo.plaf.mcwin.McWinLookAndFeel;
+import com.jtattoo.plaf.mint.MintLookAndFeel;
 import com.jtattoo.plaf.noire.NoireLookAndFeel;
+import com.jtattoo.plaf.smart.SmartLookAndFeel;
+import com.jtattoo.plaf.texture.TextureLookAndFeel;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -14,6 +24,9 @@ import java.util.logging.Logger;
 import javax.swing.JInternalFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.basic.BasicLookAndFeel;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.multi.MultiLookAndFeel;
 
 /**
  *
@@ -26,9 +39,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     Date fechaActual;
     Thread t1;
     Inscripcion inscripcionForm;
-    CobrarMensualidad cobrarMensualidad;
-    CobrarSemana cobrarSemana;
-    CobrarVisita cobrarVisita;
+    Cobrar cobrarMensualidad;
     Inventario inventario;
     VentasGenerar ventasGenerar;
     /**
@@ -159,8 +170,6 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         jMenuItem8 = new javax.swing.JMenuItem();
         btnMenuCobros = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
         btnMenuInventario = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         btnMenuVenta = new javax.swing.JMenu();
@@ -246,30 +255,13 @@ public class Principal extends javax.swing.JFrame implements Runnable{
 
         btnMenuCobros.setText("Cobros");
 
-        jMenuItem1.setText("Mensualidad");
+        jMenuItem1.setText("Cobros");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
         btnMenuCobros.add(jMenuItem1);
-
-        jMenuItem2.setText("Semana");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        btnMenuCobros.add(jMenuItem2);
-
-        jMenuItem3.setText("Visita");
-        jMenuItem3.setEnabled(false);
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        btnMenuCobros.add(jMenuItem3);
 
         jMenuBar1.add(btnMenuCobros);
 
@@ -335,25 +327,11 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        if(!(cobrarMensualidad instanceof CobrarMensualidad)){
-            cobrarMensualidad = new CobrarMensualidad();
+        if(!(cobrarMensualidad instanceof Cobrar)){
+            cobrarMensualidad = new Cobrar();
         }
         centrarVentanaInterna(cobrarMensualidad);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        if(!(cobrarSemana instanceof CobrarSemana)){
-            cobrarSemana = new CobrarSemana();
-        }
-        centrarVentanaInterna(cobrarSemana);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        if(!(cobrarVisita instanceof CobrarVisita)){
-            cobrarVisita = new CobrarVisita();
-        }
-        centrarVentanaInterna(cobrarVisita);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         if(!(inventario instanceof Inventario)){
@@ -430,8 +408,6 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;

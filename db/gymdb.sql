@@ -48,6 +48,7 @@ create table ClienteSemanal(
     Nom_Sem varchar(30) not null,
     ApPat_Sem varchar(15) not null,
     ApMat_Sem varchar(15) not null,
+    Est_Sem varchar(15) not null,
     ID_Pago int not null,
     constraint fk_ID_Pago4 foreign key (ID_Pago) references Pagos (ID_Pago) -- Cambio aquí en el nombre de la llave*/
 );
