@@ -35,7 +35,7 @@ public class Cobrar extends javax.swing.JInternalFrame {
             "    COALESCE(C.ID_Cli, CS.ID_Sem) AS ID_Cliente,\n" +
             "    CONCAT(COALESCE(C.Nom_Cli, CS.Nom_Sem), ' ', COALESCE(C.ApPat_Cli, CS.ApPat_Sem), ' ', COALESCE(C.ApMat_Cli, CS.ApMat_Sem)) AS Nombre_Completo,\n" +
             "    COALESCE(PM.Desc_Pago, 'Pago semanal') AS Descripcion_Pago,\n" +
-            "    COALESCE(P.Fec_Pago, 'N/A') AS Ultimo_Pago\n" +
+            "    COALESCE(LP.Fec_Pago, 'N/A') AS Ultimo_Pago\n" +
             "FROM \n" +
             "    (\n" +
             "    SELECT \n" +
@@ -58,15 +58,37 @@ public class Cobrar extends javax.swing.JInternalFrame {
             "    ClienteSemanal CS ON PM.ID_Cli = CS.ID_Sem\n" +
             "LEFT JOIN \n" +
             "    Pagos P ON PM.ID_Pago = P.ID_Pago\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT \n" +
+            "        ID_Cli,\n" +
+            "        MAX(Fec_Pago) AS Fec_Pago\n" +
+            "    FROM \n" +
+            "        (\n" +
+            "        SELECT \n" +
+            "            ID_Cli,\n" +
+            "            ID_Pago\n" +
+            "        FROM \n" +
+            "            Mensualidades\n" +
+            "        UNION ALL\n" +
+            "        SELECT \n" +
+            "            ID_Sem AS ID_Cli,\n" +
+            "            ID_Pago\n" +
+            "        FROM \n" +
+            "            ClienteSemanal\n" +
+            "        ) AS PM\n" +
+            "    LEFT JOIN Pagos ON PM.ID_Pago = Pagos.ID_Pago\n" +
+            "    GROUP BY \n" +
+            "        ID_Cli\n" +
+            "    ) AS LP ON (C.ID_Cli = LP.ID_Cli OR CS.ID_Sem = LP.ID_Cli)\n" +
             "WHERE \n" +
             "    (\n" +
             "    PM.Desc_Pago = 'Pago mensual' AND \n" +
-            "    COALESCE((SELECT Fec_Pago FROM Pagos WHERE ID_Pago = PM.ID_Pago), '1900-01-01') < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)\n" +
+            "    COALESCE(LP.Fec_Pago, '1900-01-01') < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)\n" +
             "    )\n" +
             "    OR \n" +
             "    (\n" +
             "    PM.Desc_Pago = 'Pago semanal' AND \n" +
-            "    COALESCE((SELECT Fec_Pago FROM Pagos WHERE ID_Pago = PM.ID_Pago), '1900-01-01') < DATE_SUB(CURDATE(), INTERVAL 1 WEEK)\n" +
+            "    COALESCE(LP.Fec_Pago, '1900-01-01') < DATE_SUB(CURDATE(), INTERVAL 1 WEEK)\n" +
             "    )\n" +
             "    AND (C.Est_Cli = 'Activo' OR CS.Est_Sem = 'Activo') -- Condición para clientes activos\n" +
             "ORDER BY \n" +
