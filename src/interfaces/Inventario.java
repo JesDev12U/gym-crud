@@ -3,8 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package interfaces;
-import gym.Gym;
+import java.sql.*;
+import gym.*;
+import configtablas.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author jesus
@@ -19,10 +26,73 @@ public class Inventario extends javax.swing.JInternalFrame {
         //labelCampoVacio.setVisible(false);
         btnAgregar.setEnabled(false);
         labelCarga.setVisible(false);
+        mostrarDatosTabla();
     }
 
     private void habilitarBoton(){
         btnAgregar.setEnabled(!txtNom.getText().isEmpty());
+    }
+    
+    private void mostrarDatosTabla(){
+        if(MySQLConnection.conectarBD()){
+            String query = "SELECT ID_Prod, T_Prod, Nom_Prod, Pre_Prod, UE_Prod FROM Inventario WHERE Est_Prod = 1";
+            Statement st;
+            Connection conexion = MySQLConnection.getConexion();
+            tablaInventario.setDefaultRenderer(Object.class, new RenderTabla());
+            JButton btnMod = new JButton("Modificar");
+            btnMod.setName("btnModificar");
+            JButton btnDel = new JButton("Eliminar");
+            btnDel.setName("btnEliminar");
+            int[] columnas = {1, 2, 3, 4};
+            DefaultTableModel model = new DefaultTableModel(){
+                @Override
+                public boolean isCellEditable(int row, int column){
+                    for(int elem : columnas){
+                        if(column == elem){
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            };
+            model.addColumn("ID");
+            model.addColumn("Tipo");
+            model.addColumn("Nombre");
+            model.addColumn("Precio");
+            model.addColumn("Unidades existentes");
+            model.addColumn("Modificar");
+            model.addColumn("Eliminar");
+            
+            tablaInventario.setModel(model);
+            Object[] datos = new Object[7];
+            try{
+                st = conexion.createStatement();
+                ResultSet rs = st.executeQuery(query);
+                while(rs.next()){
+                    datos[0] = rs.getString(1);
+                    datos[1] = rs.getString(2);
+                    datos[2] = rs.getString(3);
+                    datos[3] = rs.getString(4);
+                    datos[4] = rs.getString(5);
+                    datos[5] = btnMod;
+                    datos[6] = btnDel;
+                    model.addRow(datos);
+                }
+                tablaInventario.setModel(model);
+                tablaInventario.setRowHeight(30);
+            } catch(SQLException e){
+                System.out.println("Error al ejecutar la transacción de inserción.");
+                e.printStackTrace();
+                if (conexion != null) {
+                    try {
+                        conexion.rollback(); // Hacer rollback en caso de error
+                        conexion.setAutoCommit(true);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
     }
     
     /**
@@ -36,19 +106,20 @@ public class Inventario extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaInventario = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtNom = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbxTipoProducto = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        spinnerPrecio = new javax.swing.JSpinner();
         jLabel6 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
+        spinnerUE = new javax.swing.JSpinner();
         btnAgregar = new javax.swing.JButton();
         labelCampoVacio = new javax.swing.JLabel();
         labelCarga = new javax.swing.JLabel();
+        btnRefrescar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -59,19 +130,33 @@ public class Inventario extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel1.setText("Inventario");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaInventario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Tipo producto", "Nombre", "Precio", "Unidades Existentes", "Modificar", "Eliminar"
+                "ID", "Tipo producto", "Nombre", "Precio", "Unidades Existentes", "Modificar", "Eliminar"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, false, false
+            };
 
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaInventario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaInventarioMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaInventario);
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel2.setText("Agregar producto");
 
         jLabel3.setText("Nombre");
@@ -87,11 +172,16 @@ public class Inventario extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Tipo de producto");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bebida", "Suplemento" }));
+        cmbxTipoProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bebida", "Suplemento" }));
 
         jLabel5.setText("Precio");
 
+        spinnerPrecio.setModel(new javax.swing.SpinnerNumberModel(10.0d, 1.0d, 9999.0d, 1.0d));
+
         jLabel6.setText("Unidades Existentes");
+
+        spinnerUE.setModel(new javax.swing.SpinnerNumberModel(10, 1, 9999, 1));
+        spinnerUE.setValue(5);
 
         btnAgregar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         btnAgregar.setText("Agregar");
@@ -107,83 +197,97 @@ public class Inventario extends javax.swing.JInternalFrame {
 
         labelCarga.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cargando.gif"))); // NOI18N
 
+        btnRefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/refresh.png"))); // NOI18N
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(327, 327, 327)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(169, 169, 169)
+                                .addComponent(btnRefrescar)
+                                .addGap(75, 75, 75))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(labelCampoVacio)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(labelCampoVacio))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(17, 17, 17)
                                         .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(labelCarga)
-                                        .addGap(12, 12, 12)))))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(spinnerUE, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbxTipoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(42, 42, 42)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spinnerPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36)))
+                        .addComponent(labelCarga)
+                        .addGap(20, 20, 20)))
                 .addGap(25, 25, 25))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(275, 275, 275))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnRefrescar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelCampoVacio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(7, 7, 7)
+                        .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(labelCampoVacio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(5, 5, 5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbxTipoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)
+                            .addComponent(spinnerPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(13, 13, 13)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(spinnerUE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11))
+                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(labelCarga)
-                        .addGap(15, 15, 15))))
+                        .addGap(37, 37, 37))))
         );
 
         pack();
@@ -198,12 +302,24 @@ public class Inventario extends javax.swing.JInternalFrame {
         Gym.validarAlfabeto(evt);
     }//GEN-LAST:event_txtNomKeyTyped
 
-    private void proceso(){
-        try {
-            btnAgregar.setEnabled(false);
-            Thread.sleep(3000);
-            btnAgregar.setEnabled(true);
-        } catch (InterruptedException ex) {}
+    private int agregarProducto() throws SQLException{
+        int filasAfectadas = 0;
+        if(MySQLConnection.conectarBD()){
+            Connection conexion = MySQLConnection.getConexion();
+            String query = "INSERT INTO Inventario (ID_Prod, T_Prod, Nom_Prod, Pre_Prod, UE_Prod, Est_Prod) VALUES (DEFAULT, ?, ?, ?, ?, ?)";
+            conexion.setAutoCommit(false);
+            PreparedStatement st = conexion.prepareStatement(query);
+            st.setString(1, cmbxTipoProducto.getSelectedItem().toString());
+            st.setString(2, txtNom.getText());
+            st.setDouble(3, Double.parseDouble(spinnerPrecio.getValue().toString()));
+            st.setInt(4, Integer.parseInt(spinnerUE.getValue().toString()));
+            st.setBoolean(5, true);
+            st.executeUpdate();
+            conexion.commit();
+            conexion.setAutoCommit(true);
+            filasAfectadas = 1;
+        }
+        return filasAfectadas;
     }
     
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -211,19 +327,137 @@ public class Inventario extends javax.swing.JInternalFrame {
             @Override
             public void run(){
                 labelCarga.setVisible(true);
-                proceso();
-                labelCarga.setVisible(false);
-                JOptionPane.showMessageDialog(null, 
+                int filasAfectadas = 0;
+                try {
+                    filasAfectadas = agregarProducto();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if(filasAfectadas > 0){
+                    JOptionPane.showMessageDialog(null, 
                         "Producto almacenado correctamente", 
                         "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                } else{
+                    JOptionPane.showMessageDialog(null, 
+                        "Error al almacenar el producto", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                btnRefrescar.doClick();
+                labelCarga.setVisible(false);
             }
         }.start();
     }//GEN-LAST:event_btnAgregarActionPerformed
+    
+    /*private int obtenerIdProducto(String nombre) throws SQLException{
+        if(MySQLConnection.conectarBD()){
+            Connection conexion = MySQLConnection.getConexion();
+            String query = "SELECT ID_Prod FROM Inventario WHERE Nom_Prod = '" + nombre + "'";
+            Statement st = conexion.prepareStatement(query);
+            ResultSet resultSet = st.executeQuery(query);
+            int rs = 0;
+            while(resultSet.next()){
+                rs = resultSet.getInt("ID_Prod");
+            }
+            return rs;
+        }
+        return -1;
+    }*/
+    
+    private void tablaInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaInventarioMouseClicked
+        int seleccion = tablaInventario.rowAtPoint(evt.getPoint());
+        int column = tablaInventario.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY() / tablaInventario.getRowHeight();
+        
+        if(row < tablaInventario.getRowCount() && row >= 0 && column < tablaInventario.getColumnCount() 
+                && column >= 0){
+            Object value = tablaInventario.getValueAt(row, column);
+            if(value instanceof JButton){
+                new Thread(){
+                    @Override
+                    public void run(){
+                        labelCarga.setVisible(true);
+                        ((JButton)value).doClick();
+                        JButton boton = (JButton)value;
+                        int id = Integer.parseInt(String.valueOf(tablaInventario.getValueAt(seleccion, 0)));
+                        if(boton.getName().equals("btnModificar")){
+                            int filasAfectadas = 0;
+                            Connection conexion = null;
+                            if(MySQLConnection.conectarBD()){
+                                try {
+                                    conexion = MySQLConnection.getConexion();
+                                    conexion.setAutoCommit(false);
+                                    
+                                    String t_prod = String.valueOf(tablaInventario.getValueAt(seleccion, 1));
+                                    String nombre = String.valueOf(tablaInventario.getValueAt(seleccion, 2));
+                                    double precio = Double.parseDouble(String.valueOf(tablaInventario.getValueAt(seleccion, 3)));
+                                    int unidadesE = Integer.parseInt(String.valueOf(tablaInventario.getValueAt(seleccion, 4)));
+                                    String query = "UPDATE Inventario SET T_Prod = ?, Nom_Prod = ?, Pre_Prod = ?, UE_Prod = ? WHERE ID_Prod = ?";
+                                    PreparedStatement st = conexion.prepareStatement(query);
+                                    st.setString(1, t_prod);
+                                    st.setString(2, nombre);
+                                    st.setDouble(3, precio);
+                                    st.setInt(4, unidadesE);
+                                    st.setInt(5, id);
+                                    st.executeUpdate();
+                                    conexion.commit();
+                                    conexion.setAutoCommit(true);
+                                    filasAfectadas = 1;
+                                    
+                                } catch (Exception ex) {
+                                    Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                            if(filasAfectadas > 0){
+                                    JOptionPane.showMessageDialog(null, "Producto actualizado correctamente", 
+                                            "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                            } else{
+                                JOptionPane.showMessageDialog(null, "Error al actualizar el producto",
+                                   "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                            btnRefrescar.doClick();
+                        }
+                        if(boton.getName().equals("btnEliminar")){
+                            int filasAfectadas = 0;
+                            if(MySQLConnection.conectarBD()){
+                                Connection conexion = MySQLConnection.getConexion();
+                                String query = "UPDATE Inventario SET Est_Prod = 0 WHERE ID_Prod = ?";
+                                try {
+                                    conexion.setAutoCommit(false);
+                                    PreparedStatement st = conexion.prepareStatement(query);
+                                    st.setInt(1, id);
+                                    st.executeUpdate();
+                                    conexion.commit();
+                                    conexion.setAutoCommit(true);
+                                    filasAfectadas = 1;
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                            if(filasAfectadas > 0){
+                                JOptionPane.showMessageDialog(null, "Producto eliminado correctamente",
+                                        "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                            } else{
+                                JOptionPane.showMessageDialog(null, "Error al eliminar el producto",
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                            btnRefrescar.doClick();
+                        }
+                        labelCarga.setVisible(false);
+                    }
+                }.start();
+            }
+        }
+    }//GEN-LAST:event_tablaInventarioMouseClicked
+
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        mostrarDatosTabla();
+    }//GEN-LAST:event_btnRefrescarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnRefrescar;
+    private javax.swing.JComboBox<String> cmbxTipoProducto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -231,11 +465,11 @@ public class Inventario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelCampoVacio;
     private javax.swing.JLabel labelCarga;
+    private javax.swing.JSpinner spinnerPrecio;
+    private javax.swing.JSpinner spinnerUE;
+    private javax.swing.JTable tablaInventario;
     private javax.swing.JTextField txtNom;
     // End of variables declaration//GEN-END:variables
 }

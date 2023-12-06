@@ -54,11 +54,12 @@ create table ClienteSemanal(
 );
 
 create table Inventario(
-    ID_Prod int PRIMARY KEY,
+    ID_Prod int PRIMARY KEY AUTO_INCREMENT,
     T_Prod varchar(10) not null,
     Nom_Prod varchar(30) not null,
     Pre_Prod double not null,
-    UE_Prod int not null
+    UE_Prod int not null,
+    Est_Prod bool not null
 );
 
 create table Ventas(

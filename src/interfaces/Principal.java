@@ -172,12 +172,14 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         jMenuItem1 = new javax.swing.JMenuItem();
         btnMenuInventario = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         btnMenuVenta = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         btnMenuKick = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -275,6 +277,9 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         });
         btnMenuInventario.add(jMenuItem9);
 
+        jMenuItem2.setText("Inhabilitados");
+        btnMenuInventario.add(jMenuItem2);
+
         jMenuBar1.add(btnMenuInventario);
 
         btnMenuVenta.setText("Venta");
@@ -301,6 +306,9 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         btnMenuKick.add(jMenuItem7);
 
         jMenuBar1.add(btnMenuKick);
+
+        jMenu1.setText("Dar de baja");
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -406,8 +414,10 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     private javax.swing.JMenu btnMenuVenta;
     private javax.swing.JButton btnReintentarConexion;
     private javax.swing.JDesktopPane desktopPane;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
