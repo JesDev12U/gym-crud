@@ -110,7 +110,12 @@ public class Cobrar extends javax.swing.JInternalFrame {
             "    ID_Cliente;";
             Statement st;
             Connection conexion = MySQLConnection.getConexion();
-            DefaultTableModel model = new DefaultTableModel();
+            DefaultTableModel model = new DefaultTableModel(){
+                @Override
+                public boolean isCellEditable(int row, int column){
+                    return false;
+                }
+            };
             model.addColumn("Número de Folio");
             model.addColumn("Nombre");
             model.addColumn("Descripción del pago");
@@ -127,6 +132,7 @@ public class Cobrar extends javax.swing.JInternalFrame {
                     datos[3] = rs.getString(4);
                     model.addRow(datos);
                 }
+                tablaClientes.setModel(model);
             } catch (SQLException e) {
                 System.out.println("Error al ejecutar la transacción de inserción.");
                 e.printStackTrace();
@@ -484,6 +490,7 @@ public class Cobrar extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         mostrarDatosTabla();
+        btnRealizarCobro.setEnabled(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
