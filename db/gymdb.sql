@@ -95,3 +95,11 @@ create table PagoKick(
     constraint fk_ID_Pago6 foreign key (ID_Pago) references Pagos (ID_Pago),
     FecVig_PagoK date not null
 );
+
+create table pagosemanales(
+	ID_PSem int PRIMARY KEY auto_increment,
+    ID_CliSem varchar(5) not null,
+    ID_Pago int not null,
+    constraint fk_ID_Cli1 foreign key (ID_CliSem) references ClienteSemanal (ID_CliSem),
+    constraint fk_ID_Pago3 foreign key (ID_Pago) references Pagos (ID_Pago)
+);

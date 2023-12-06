@@ -51,6 +51,13 @@ public class Cobrar extends javax.swing.JInternalFrame {
             "        'Pago semanal' AS Desc_Pago\n" +
             "    FROM \n" +
             "        ClienteSemanal\n" +
+            "    UNION ALL\n" +
+            "    SELECT \n" +
+            "        ID_CliSem AS ID_Cli,\n" +
+            "        ID_Pago,\n" +
+            "        'Pago semanal' AS Desc_Pago\n" +
+            "    FROM \n" +
+            "        pagosemanales\n" +
             "    ) AS PM\n" +
             "LEFT JOIN \n" +
             "    Clientes C ON PM.ID_Cli = C.ID_Cli\n" +
@@ -75,6 +82,12 @@ public class Cobrar extends javax.swing.JInternalFrame {
             "            ID_Pago\n" +
             "        FROM \n" +
             "            ClienteSemanal\n" +
+            "        UNION ALL\n" +
+            "        SELECT \n" +
+            "            ID_CliSem AS ID_Cli,\n" +
+            "            ID_Pago\n" +
+            "        FROM \n" +
+            "            pagosemanales\n" +
             "        ) AS PM\n" +
             "    LEFT JOIN Pagos ON PM.ID_Pago = Pagos.ID_Pago\n" +
             "    GROUP BY \n" +
@@ -82,15 +95,17 @@ public class Cobrar extends javax.swing.JInternalFrame {
             "    ) AS LP ON (C.ID_Cli = LP.ID_Cli OR CS.ID_Sem = LP.ID_Cli)\n" +
             "WHERE \n" +
             "    (\n" +
-            "    PM.Desc_Pago = 'Pago mensual' AND \n" +
-            "    COALESCE(LP.Fec_Pago, '1900-01-01') < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)\n" +
-            "    )\n" +
-            "    OR \n" +
-            "    (\n" +
-            "    PM.Desc_Pago = 'Pago semanal' AND \n" +
-            "    COALESCE(LP.Fec_Pago, '1900-01-01') < DATE_SUB(CURDATE(), INTERVAL 1 WEEK)\n" +
+            "    (PM.Desc_Pago = 'Pago mensual' OR PM.Desc_Pago = 'Pago semanal') AND \n" +
+            "    COALESCE(LP.Fec_Pago, '1900-01-01') <\n" +
+            "        CASE\n" +
+            "            WHEN PM.Desc_Pago = 'Pago mensual' THEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH)\n" +
+            "            WHEN PM.Desc_Pago = 'Pago semanal' THEN DATE_SUB(CURDATE(), INTERVAL 1 WEEK)\n" +
+            "            ELSE CURDATE()\n" +
+            "        END\n" +
             "    )\n" +
             "    AND (C.Est_Cli = 'Activo' OR CS.Est_Sem = 'Activo') -- Condición para clientes activos\n" +
+            "GROUP BY \n" +
+            "    ID_Cliente\n" +
             "ORDER BY \n" +
             "    ID_Cliente;";
             Statement st;
@@ -149,11 +164,11 @@ public class Cobrar extends javax.swing.JInternalFrame {
         btnRealizarCobro = new javax.swing.JButton();
         labelCarga = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbxFormaPago = new javax.swing.JComboBox<>();
         txtMonto = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         txtDescPago = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -215,16 +230,9 @@ public class Cobrar extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Forma de pago");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Tarjeta" }));
+        cmbxFormaPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Tarjeta" }));
 
         txtMonto.setEnabled(false);
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/refresh.png"))); // NOI18N
-        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel6MouseClicked(evt);
-            }
-        });
 
         txtDescPago.setText("Pago ");
         txtDescPago.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -234,6 +242,13 @@ public class Cobrar extends javax.swing.JInternalFrame {
         });
 
         jLabel7.setText("Pago");
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/refresh.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -254,25 +269,26 @@ public class Cobrar extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
+                        .addComponent(cmbxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
                         .addComponent(btnRealizarCobro)
-                        .addGap(57, 57, 57)
-                        .addComponent(labelCarga))
+                        .addGap(30, 30, 30)
+                        .addComponent(labelCarga)
+                        .addGap(0, 70, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(209, 209, 209)
+                        .addComponent(jButton1)
+                        .addGap(57, 57, 57))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 34, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDescPago, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(139, 139, 139)
-                                .addComponent(jLabel6)))
-                        .addGap(45, 45, 45)))
+                        .addGap(85, 85, 85)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDescPago, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
@@ -280,34 +296,32 @@ public class Cobrar extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(24, 24, 24)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7)
                             .addComponent(txtDescPago, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel6)))
+                    .addComponent(jLabel1))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3)
-                                .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel5)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(btnRealizarCobro, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(cmbxFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRealizarCobro)))
                     .addComponent(labelCarga))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -319,23 +333,114 @@ public class Cobrar extends javax.swing.JInternalFrame {
         gym.procesoFiltro(txtFiltro, tablaClientes, 1);
     }//GEN-LAST:event_txtFiltroKeyTyped
 
+    private int realizarCobroMensual(){
+        int filasAfectadas = 0;
+        Connection conexion = null;
+        try {
+            if(MySQLConnection.conectarBD()){
+                conexion = MySQLConnection.getConexion();
+                conexion.setAutoCommit(false);
+                double monto = Double.parseDouble(txtMonto.getText());
+                int idPago = Gym.registrarPago("Pago mensual", cmbxFormaPago, monto);
+                String folio = txtFolio.getText();
+                String query = "INSERT INTO mensualidades VALUES (DEFAULT, ?, ?)";
+                PreparedStatement statement = conexion.prepareStatement(query);
+                statement.setString(1, folio);
+                statement.setInt(2, idPago);
+                statement.executeUpdate();
+                conexion.commit();
+                conexion.setAutoCommit(true);
+                filasAfectadas = 1;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la transacción de inserción.");
+            e.printStackTrace();
+            if (conexion != null) {
+                try {
+                    conexion.rollback(); // Hacer rollback en caso de error
+                    conexion.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return filasAfectadas;
+    }
+    
+    private int realizarCobroSemanal(){
+        int filasAfectadas = 0;
+        Connection conexion = null;
+        try {
+            if(MySQLConnection.conectarBD()){
+                conexion = MySQLConnection.getConexion();
+                conexion.setAutoCommit(false);
+                double monto = Double.parseDouble(txtMonto.getText());
+                int idPago = Gym.registrarPago("Pago semanal", cmbxFormaPago, monto);
+                String folio = txtFolio.getText();
+                String query = "INSERT INTO pagosemanales (ID_PSem, ID_CliSem, ID_Pago) VALUES (DEFAULT, ?, ?)";
+                PreparedStatement statement = conexion.prepareStatement(query);
+                statement.setString(1, folio);
+                statement.setInt(2, idPago);
+                statement.executeUpdate();
+                conexion.commit();
+                conexion.setAutoCommit(true);
+                filasAfectadas = 1;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la transacción de inserción.");
+            e.printStackTrace();
+            if (conexion != null) {
+                try {
+                    conexion.rollback(); // Hacer rollback en caso de error
+                    conexion.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return filasAfectadas;
+    }
+    
     private void btnRealizarCobroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarCobroActionPerformed
         new Thread(){
             @Override
             public void run(){
                 labelCarga.setVisible(true);
-                proceso();
+                /*realizarCobroMensual();
+                mostrarDatosTabla(); //Actualiza la tabla de clientes*/
+                char idFolioChar = txtFolio.getText().charAt(0);
+                switch(idFolioChar){
+                    case 'C' -> {
+                        int ejecutar = realizarCobroMensual();
+                        if(ejecutar > 0){
+                            JOptionPane.showMessageDialog(null,
+                                    "Cobro realizado correctamente", "Aviso",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else{
+                            JOptionPane.showMessageDialog(null,
+                                    "Error al realizar el cobro", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    case 'S' -> {
+                        int ejecutar = realizarCobroSemanal();
+                        if(ejecutar > 0){
+                            JOptionPane.showMessageDialog(null,
+                                    "Cobro realizado correctamente", "Aviso",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else{
+                            JOptionPane.showMessageDialog(null,
+                                    "Error al realizar el cobro", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+                mostrarDatosTabla();
                 labelCarga.setVisible(false);
-                JOptionPane.showMessageDialog(null, 
-                        "Cobro realizado correctamente", 
-                        "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                btnRealizarCobro.setEnabled(false);
             }
         }.start();
     }//GEN-LAST:event_btnRealizarCobroActionPerformed
-
-    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        mostrarDatosTabla();
-    }//GEN-LAST:event_jLabel6MouseClicked
 
     private long calcularDiasDiferencia(String fechaSeleccionada){
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -377,25 +482,21 @@ public class Cobrar extends javax.swing.JInternalFrame {
         //gym.procesoFiltro(txtFiltro, tablaClientes, 1);
     }//GEN-LAST:event_txtDescPagoKeyTyped
 
-    public void proceso(){
-        try {
-            btnRealizarCobro.setEnabled(false);
-            Thread.sleep(3000);
-            btnRealizarCobro.setEnabled(true);
-        } catch (InterruptedException ex) {}
-    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        mostrarDatosTabla();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btnGClientes;
     private javax.swing.JButton btnRealizarCobro;
+    private javax.swing.JComboBox<String> cmbxFormaPago;
+    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelCarga;

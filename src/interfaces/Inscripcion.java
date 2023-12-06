@@ -364,6 +364,12 @@ public class Inscripcion extends javax.swing.JInternalFrame {
                 statementClienteSemanal.setInt(6, idPago);
                 statementClienteSemanal.executeUpdate();
                 
+                String insertSemana = "INSERT INTO pagosemanales (ID_PSem, ID_CliSem, ID_Pago) VALUES (DEFAULT, ?, ?)";
+                PreparedStatement st = conexion.prepareStatement(insertSemana);
+                st.setString(1, idClienteSemanal);
+                st.setInt(2, idPago);
+                st.executeUpdate();
+                
                 conexion.commit();
                 conexion.setAutoCommit(true);
                 filasAfectadas = 1;
