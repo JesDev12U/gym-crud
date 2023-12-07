@@ -12,17 +12,32 @@ import javax.swing.table.DefaultTableModel;
  * @author jesus
  */
 public class InventarioDesHab extends javax.swing.JInternalFrame {
-
+    private JButton btnHab;
+    private JButton[] botones;
+    private String[] nomCols;
+    private final Inventario inventario;
     /**
      * Creates new form InventarioDesHab
      */
     public InventarioDesHab() {
         initComponents();
-        mostrarTabla();
+        //mostrarTabla();
         labelCarga.setVisible(false);
+        botonHab();
+        inventario = new Inventario();
+        inventario.mostrarDatosTabla("Est_Prod = 0", botones, nomCols, tablaInventario);
     }
     
-    private void mostrarTabla(){
+    private void botonHab(){
+        btnHab = new JButton("Habilitar");
+        btnHab.setName("btnHabilitar");
+        botones = new JButton[1];
+        botones[0] = btnHab;
+        nomCols = new String[1];
+        nomCols[0] = "Habilitar";
+    }
+    
+    /*private void mostrarTabla(){
         if(MySQLConnection.conectarBD()){
             String query = "SELECT ID_Prod, T_Prod, Nom_Prod, Pre_Prod, UE_Prod FROM Inventario WHERE Est_Prod = 0";
             Statement st;
@@ -72,7 +87,7 @@ public class InventarioDesHab extends javax.swing.JInternalFrame {
                 }
             }
         }
-    }
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -173,7 +188,7 @@ public class InventarioDesHab extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
-        mostrarTabla();
+        inventario.mostrarDatosTabla("Est_Prod = 0", botones, nomCols, tablaInventario);
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
     private void tablaInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaInventarioMouseClicked
@@ -191,12 +206,13 @@ public class InventarioDesHab extends javax.swing.JInternalFrame {
                         ((JButton)value).doClick();
                         JButton boton = (JButton)value;
                         int id = Integer.parseInt(String.valueOf(tablaInventario.getValueAt(seleccion, 0)));
-                        int filasAfectadas = 0;
+                        
                         if(boton.getName().equals("btnHabilitar")){
+                            int filasAfectadas = 0;
                             if(MySQLConnection.conectarBD()){
-                                Connection conexion = MySQLConnection.getConexion();
-                                String query = "UPDATE Inventario SET Est_Prod = 1 WHERE ID_Prod = ?";
                                 try {
+                                    Connection conexion = MySQLConnection.getConexion();
+                                    String query = "UPDATE Inventario SET Est_Prod = 1 WHERE ID_Prod = ?";
                                     conexion.setAutoCommit(false);
                                     PreparedStatement st = conexion.prepareStatement(query);
                                     st.setInt(1, id);
@@ -206,16 +222,18 @@ public class InventarioDesHab extends javax.swing.JInternalFrame {
                                     filasAfectadas = 1;
                                 } catch (SQLException ex) {
                                     Logger.getLogger(InventarioDesHab.class.getName()).log(Level.SEVERE, null, ex);
+                                    System.out.println(ex);
                                 }
                             }
-                        }
-                        if(filasAfectadas > 0){
+                            if(filasAfectadas > 0){
                             JOptionPane.showMessageDialog(null, "Producto habilitado", 
                                     "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                        } else{
-                            JOptionPane.showMessageDialog(null, "Error al habilitar el producto",
-                                    "Error", JOptionPane.ERROR_MESSAGE);
+                            } else{
+                                JOptionPane.showMessageDialog(null, "Error al habilitar el producto",
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+                            }
                         }
+                        
                         labelCarga.setVisible(false);
                         btnRefrescar.doClick();
                     }

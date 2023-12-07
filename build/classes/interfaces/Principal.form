@@ -94,7 +94,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="btnMenuBajas">
           <Properties>
             <Property name="text" type="java.lang.String" value="Dar de baja"/>
           </Properties>

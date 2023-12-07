@@ -10,14 +10,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author jesus
  */
-public class Inventario extends javax.swing.JInternalFrame {
-
+public final class Inventario extends javax.swing.JInternalFrame {
+    private JButton btnMod;
+    private JButton btnDel;
+    private JButton[] botones;
+    private String[] nomCols;
     /**
      * Creates new form Inventario
      */
@@ -26,60 +30,95 @@ public class Inventario extends javax.swing.JInternalFrame {
         //labelCampoVacio.setVisible(false);
         btnAgregar.setEnabled(false);
         labelCarga.setVisible(false);
-        mostrarDatosTabla();
+        botonesModDel();
+        mostrarDatosTabla("Est_Prod = 1", botones, nomCols, tablaInventario);
+    }
+    
+    private void botonesModDel(){
+        btnMod = new JButton("Modificar");
+        btnDel = new JButton("Eliminar");
+        btnMod.setName("btnModificar");
+        btnDel.setName("btnEliminar");
+        botones = new JButton[2];
+        botones[0] = btnMod;
+        botones[1] = btnDel;
+        nomCols = new String[2];
+        nomCols[0] = "Modificar";
+        nomCols[1] = "Eliminar";
     }
 
     private void habilitarBoton(){
         btnAgregar.setEnabled(!txtNom.getText().isEmpty());
     }
     
-    private void mostrarDatosTabla(){
+    public void mostrarDatosTabla(String where, JButton botones[], String nomCol[], JTable tabla){
         if(MySQLConnection.conectarBD()){
-            String query = "SELECT ID_Prod, T_Prod, Nom_Prod, Pre_Prod, UE_Prod FROM Inventario WHERE Est_Prod = 1";
+            String query = "SELECT ID_Prod, T_Prod, Nom_Prod, Pre_Prod, UE_Prod FROM Inventario WHERE " + where;
             Statement st;
             Connection conexion = MySQLConnection.getConexion();
-            tablaInventario.setDefaultRenderer(Object.class, new RenderTabla());
-            JButton btnMod = new JButton("Modificar");
+            DefaultTableModel model;
+            tabla.setDefaultRenderer(Object.class, new RenderTabla());
+            /*JButton btnMod = new JButton("Modificar");
             btnMod.setName("btnModificar");
             JButton btnDel = new JButton("Eliminar");
-            btnDel.setName("btnEliminar");
+            btnDel.setName("btnEliminar");*/
             int[] columnas = {1, 2, 3, 4};
-            DefaultTableModel model = new DefaultTableModel(){
-                @Override
-                public boolean isCellEditable(int row, int column){
-                    for(int elem : columnas){
-                        if(column == elem){
-                            return true;
+            if(botones.length != 0){
+                model = new DefaultTableModel(){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        for(int elem : columnas){
+                            if(column == elem){
+                                return true;
+                            }
                         }
+                        return false;
                     }
-                    return false;
-                }
-            };
+                };
+            } else{
+                model = new DefaultTableModel(){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+            }
             model.addColumn("ID");
             model.addColumn("Tipo");
             model.addColumn("Nombre");
             model.addColumn("Precio");
             model.addColumn("Unidades existentes");
-            model.addColumn("Modificar");
-            model.addColumn("Eliminar");
-            
-            tablaInventario.setModel(model);
-            Object[] datos = new Object[7];
+            /*model.addColumn("Modificar");
+            model.addColumn("Eliminar");*/
+            if(nomCol.length != 0){
+                for(String col : nomCol){
+                    model.addColumn(col);
+                }
+            }
+            tabla.setModel(model);
+            Object[] datos = new Object[5 + nomCol.length];
             try{
                 st = conexion.createStatement();
                 ResultSet rs = st.executeQuery(query);
                 while(rs.next()){
+                    int i = 5;
                     datos[0] = rs.getString(1);
                     datos[1] = rs.getString(2);
                     datos[2] = rs.getString(3);
                     datos[3] = rs.getString(4);
                     datos[4] = rs.getString(5);
-                    datos[5] = btnMod;
-                    datos[6] = btnDel;
+                    /*datos[5] = btnMod;
+                    datos[6] = btnDel;*/
+                    if(botones.length != 0){
+                        for(JButton btn : botones){
+                            datos[i] = btn;
+                            i++;
+                        }
+                    }
                     model.addRow(datos);
                 }
-                tablaInventario.setModel(model);
-                tablaInventario.setRowHeight(30);
+                tabla.setModel(model);
+                tabla.setRowHeight(30);
             } catch(SQLException e){
                 System.out.println("Error al ejecutar la transacción de inserción.");
                 e.printStackTrace();
@@ -450,7 +489,7 @@ public class Inventario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tablaInventarioMouseClicked
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
-        mostrarDatosTabla();
+        mostrarDatosTabla("Est_Prod = 1", botones, nomCols, tablaInventario);
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
 

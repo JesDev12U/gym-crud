@@ -73,6 +73,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         btnMenuInventario.setEnabled(desHab);
         btnMenuVenta.setEnabled(desHab);
         btnMenuKick.setEnabled(desHab);
+        btnMenuBajas.setEnabled(desHab);
     }
     
     private void hiloConexion(){
@@ -180,7 +181,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         btnMenuKick = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        btnMenuBajas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -313,8 +314,8 @@ public class Principal extends javax.swing.JFrame implements Runnable{
 
         jMenuBar1.add(btnMenuKick);
 
-        jMenu1.setText("Dar de baja");
-        jMenuBar1.add(jMenu1);
+        btnMenuBajas.setText("Dar de baja");
+        jMenuBar1.add(btnMenuBajas);
 
         setJMenuBar(jMenuBar1);
 
@@ -420,6 +421,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu btnMenuBajas;
     private javax.swing.JMenu btnMenuCobros;
     private javax.swing.JMenu btnMenuInscripcion;
     private javax.swing.JMenu btnMenuInventario;
@@ -427,7 +429,6 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     private javax.swing.JMenu btnMenuVenta;
     private javax.swing.JButton btnReintentarConexion;
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
