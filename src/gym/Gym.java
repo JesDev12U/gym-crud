@@ -77,6 +77,13 @@ public class Gym {
         }
     }
     
+    public static void validarNumeros(java.awt.event.KeyEvent evento){
+        //Validacion 1-9
+        if(!(evento.getKeyChar() >= 48 && evento.getKeyChar() <= 57)){
+            evento.consume();
+        }
+    }
+    
     public static void validarCantidadCaracteres(javax.swing.JTextField txt, java.awt.event.KeyEvent evento
             , int cantidad){
         if(txt.getText().length() >= cantidad){

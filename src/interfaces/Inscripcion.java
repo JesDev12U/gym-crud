@@ -16,7 +16,6 @@ public class Inscripcion extends javax.swing.JInternalFrame {
     final double costoInscripcionMensual = 3000;
     final double costoInscripcionSemanal = 1500;
     final double costoVisita = 500;
-    private javax.swing.JTextField arrayTxt[];
     /**
      * Creates new form Inscripcion
      */
@@ -26,10 +25,6 @@ public class Inscripcion extends javax.swing.JInternalFrame {
         arrayLbl[0] = labelCampoReq;
         arrayLbl[1] = labelCampoReq1;
         arrayLbl[2] = labelCampoReq2;
-        arrayTxt = new javax.swing.JTextField[3];
-        arrayTxt[0] = txtNomCliente;
-        arrayTxt[1] = txtApPatCliente;
-        arrayTxt[2] = txtApMatCliente;
         btnRealizarIns.setEnabled(false);
         Gym.iniciarForm(arrayLbl);
         labelCarga.setVisible(false);

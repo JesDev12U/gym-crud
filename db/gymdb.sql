@@ -79,13 +79,15 @@ create table DetalleDeLaVenta(
 );
 
 create table InscripcionKick(
-    ID_Kick int PRIMARY KEY,
+    ID_Kick int PRIMARY KEY auto_increment,
     Nom_Kick varchar(30) not null,
     ApPat_Kick varchar(15) not null,
     ApMat_Kick varchar(15) not null,
     FecNac_Kick date not null,
     Clase_Kick varchar(5) not null,
-    Tel_Kick int not null
+    Tel_Kick varchar(10) not null,
+    ID_Pago int not null,
+    constraint fk_ID_Pago7 foreign key (ID_Pago) references Pagos (ID_Pago)
 );
 
 create table PagoKick(

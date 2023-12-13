@@ -9,6 +9,7 @@ import com.jtattoo.plaf.aero.AeroLookAndFeel;
 import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
 import com.jtattoo.plaf.bernstein.BernsteinLookAndFeel;
 import com.jtattoo.plaf.fast.FastLookAndFeel;
+import com.jtattoo.plaf.graphite.GraphiteLookAndFeel;
 import com.jtattoo.plaf.luna.LunaLookAndFeel;
 import com.jtattoo.plaf.mcwin.McWinLookAndFeel;
 import com.jtattoo.plaf.mint.MintLookAndFeel;
@@ -44,6 +45,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     VentasGenerar ventasGenerar;
     InventarioDesHab inventarioDesHab;
     ReporteVentas reporteVentas;
+    InscripcionKick inscripcionKick;
     /**
      * Creates new form Principal
      */
@@ -313,6 +315,11 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         btnMenuKick.setText("Kick boxing");
 
         jMenuItem6.setText("Inscripción");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         btnMenuKick.add(jMenuItem6);
 
         jMenuItem7.setText("Cobro");
@@ -393,6 +400,13 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         centrarVentanaInterna(reporteVentas);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        if(!(inscripcionKick instanceof InscripcionKick)){
+            inscripcionKick = new InscripcionKick();
+        }
+        centrarVentanaInterna(inscripcionKick);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -424,7 +438,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    UIManager.setLookAndFeel(new NoireLookAndFeel());
+                    UIManager.setLookAndFeel(new GraphiteLookAndFeel());
                     new Principal().setVisible(true);
                 } catch (UnsupportedLookAndFeelException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
