@@ -7,7 +7,6 @@ package interfaces;
 import gym.*;
 import java.sql.*;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -21,7 +20,7 @@ import javax.swing.JOptionPane;
  * @author jesus
  */
 public class InscripcionKick extends javax.swing.JInternalFrame {
-    public final double montoKickDiario = 20.5;
+    public static final double montoKickDiario = 20.5;
     private int age;
     /**
      * Creates new form InscripcionKick
@@ -41,15 +40,12 @@ public class InscripcionKick extends javax.swing.JInternalFrame {
         btnRealizarIns.setEnabled(false);
         Gym.iniciarForm(arrayLbl);
         labelCarga.setVisible(false);
-        calendarFecNac.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("date".equals(evt.getPropertyName())) {
-                    habilitarBoton();
-                }
+        calendarFecNac.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            if ("date".equals(evt.getPropertyName())) {
+                habilitarBoton();
             }
         });
-        System.out.println(calendarFecNac.getDate());
+        //System.out.println(calendarFecNac.getDate());
     }
 
     private void habilitarBoton() {
@@ -375,8 +371,8 @@ public class InscripcionKick extends javax.swing.JInternalFrame {
                 conexion.setAutoCommit(false);
                 int idPago = Gym.registrarPago("Inscripción Kick Boxing", cmbxFormaPago, montoKickDiario * 30);
                 String insertInscripcionQuery = "INSERT INTO InscripcionKick (ID_Kick, Nom_Kick, ApPat_Kick, "
-                        + "ApMat_Kick, FecNac_Kick, Clase_Kick, Tel_Kick, "
-                        + "ID_Pago) VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?)";
+                        + "ApMat_Kick, FecNac_Kick, Clase_Kick, Tel_Kick, Est_Kick, "
+                        + "ID_Pago) VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement statementInscripcion = conexion.prepareStatement(insertInscripcionQuery, 
                         Statement.RETURN_GENERATED_KEYS);
                 statementInscripcion.setString(1, txtNom.getText());
@@ -394,7 +390,8 @@ public class InscripcionKick extends javax.swing.JInternalFrame {
                     statementInscripcion.setString(5, "9-10");
                 }
                 statementInscripcion.setString(6, txtTel.getText());
-                statementInscripcion.setInt(7, idPago);
+                statementInscripcion.setString(7, "Activo");
+                statementInscripcion.setInt(8, idPago);
                 statementInscripcion.executeUpdate();
                 ResultSet generatedKeysInscripcion = statementInscripcion.getGeneratedKeys();
                 int idKick = -1;

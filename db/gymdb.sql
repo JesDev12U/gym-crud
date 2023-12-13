@@ -86,6 +86,7 @@ create table InscripcionKick(
     FecNac_Kick date not null,
     Clase_Kick varchar(5) not null,
     Tel_Kick varchar(10) not null,
+    Est_Kick varchar(15) not null,
     ID_Pago int not null,
     constraint fk_ID_Pago7 foreign key (ID_Pago) references Pagos (ID_Pago)
 );

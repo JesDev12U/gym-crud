@@ -448,7 +448,7 @@ public class Cobrar extends javax.swing.JInternalFrame {
         }.start();
     }//GEN-LAST:event_btnRealizarCobroActionPerformed
 
-    private long calcularDiasDiferencia(String fechaSeleccionada){
+    public static long calcularDiasDiferencia(String fechaSeleccionada){
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         try {
             // Parsear la fecha a java.sql.Date
@@ -474,6 +474,7 @@ public class Cobrar extends javax.swing.JInternalFrame {
         String fechaSeleccionada = String.valueOf(tablaClientes.getValueAt(seleccionar, 3));
         long dias = calcularDiasDiferencia(fechaSeleccionada);
         String id = String.valueOf(tablaClientes.getValueAt(seleccionar, 0));
+        txtFolio.setText(id);
         char comienzoId = id.charAt(0);
         if(comienzoId == 'C'){
             txtMonto.setText(String.valueOf((dias * (costoMensual * 0.10)) + costoMensual));
