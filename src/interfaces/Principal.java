@@ -4,6 +4,20 @@
  */
 package interfaces;
 
+import interfaces.reportes.ReporteVentas;
+import interfaces.ventas.VentasGenerar;
+import interfaces.inventario.InventarioDesHab;
+import interfaces.inventario.Inventario;
+import interfaces.inscripciones.InscripcionKick;
+import interfaces.inscripciones.Inscripcion;
+import interfaces.cobros.CobrarKick;
+import interfaces.cobros.Cobrar;
+import interfaces.altasbajas.altas.KickBoxingAltas;
+import interfaces.altasbajas.altas.SemanalesAltas;
+import interfaces.altasbajas.altas.MensualesAltas;
+import interfaces.altasbajas.bajas.MensualesBajas;
+import interfaces.altasbajas.bajas.SemanalesBajas;
+import interfaces.altasbajas.bajas.KickBoxingBajas;
 import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 import com.jtattoo.plaf.aero.AeroLookAndFeel;
 import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
@@ -47,6 +61,12 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     ReporteVentas reporteVentas;
     InscripcionKick inscripcionKick;
     CobrarKick cobrarKick;
+    MensualesAltas mensualesAltas;
+    SemanalesAltas semanalesAltas;
+    KickBoxingAltas kickBoxingAltas;
+    MensualesBajas mensualesBajas;
+    SemanalesBajas semanalesBajas;
+    KickBoxingBajas kickBoxingBajas;
     /**
      * Creates new form Principal
      */
@@ -76,8 +96,8 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         btnMenuCobros.setEnabled(desHab);
         btnMenuInventario.setEnabled(desHab);
         btnMenuVenta.setEnabled(desHab);
-        btnMenuKick.setEnabled(desHab);
-        btnMenuBajas.setEnabled(desHab);
+        btnMenuAltasBajas.setEnabled(desHab);
+        btnMenuReportes.setEnabled(desHab);
     }
     
     private void hiloConexion(){
@@ -174,18 +194,36 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenuInscripcion = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         btnMenuCobros = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         btnMenuInventario = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         btnMenuVenta = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        btnMenuAltasBajas = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem14 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
+        btnMenuReportes = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
-        btnMenuKick = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        btnMenuBajas = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
+        jMenuItem18 = new javax.swing.JMenuItem();
+        jMenuItem19 = new javax.swing.JMenuItem();
+        jMenuItem20 = new javax.swing.JMenuItem();
+        jMenuItem21 = new javax.swing.JMenuItem();
+        jMenuItem22 = new javax.swing.JMenuItem();
+        jMenuItem23 = new javax.swing.JMenuItem();
+        jMenuItem24 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -251,7 +289,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
 
         btnMenuInscripcion.setText("Inscripción");
 
-        jMenuItem8.setText("Inscripción");
+        jMenuItem8.setText("Clientes");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem8ActionPerformed(evt);
@@ -259,17 +297,33 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         });
         btnMenuInscripcion.add(jMenuItem8);
 
+        jMenuItem6.setText("KickBoxing");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        btnMenuInscripcion.add(jMenuItem6);
+
         jMenuBar1.add(btnMenuInscripcion);
 
         btnMenuCobros.setText("Cobros");
 
-        jMenuItem1.setText("Cobros");
+        jMenuItem1.setText("Clientes");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
         btnMenuCobros.add(jMenuItem1);
+
+        jMenuItem7.setText("KickBoxing");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        btnMenuCobros.add(jMenuItem7);
 
         jMenuBar1.add(btnMenuCobros);
 
@@ -303,38 +357,109 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         });
         btnMenuVenta.add(jMenuItem4);
 
-        jMenuItem5.setText("Reporte");
+        jMenuBar1.add(btnMenuVenta);
+
+        btnMenuAltasBajas.setText("Altas/Bajas");
+
+        jMenu2.setText("Altas");
+
+        jMenuItem10.setText("Mensuales");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem10);
+
+        jMenuItem11.setText("Semanales");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem11);
+
+        jMenuItem12.setText("KickBoxing");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem12);
+
+        btnMenuAltasBajas.add(jMenu2);
+
+        jMenu3.setText("Bajas");
+
+        jMenuItem13.setText("Mensuales");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem13);
+
+        jMenuItem14.setText("Semanales");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem14);
+
+        jMenuItem15.setText("KickBoxing");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem15);
+
+        btnMenuAltasBajas.add(jMenu3);
+
+        jMenuBar1.add(btnMenuAltasBajas);
+
+        btnMenuReportes.setText("Reportes");
+
+        jMenuItem5.setText("Ventas");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem5ActionPerformed(evt);
             }
         });
-        btnMenuVenta.add(jMenuItem5);
+        btnMenuReportes.add(jMenuItem5);
 
-        jMenuBar1.add(btnMenuVenta);
+        jMenuItem3.setText("Pagos");
+        btnMenuReportes.add(jMenuItem3);
 
-        btnMenuKick.setText("Kick boxing");
+        jMenuItem16.setText("Mensualidades");
+        btnMenuReportes.add(jMenuItem16);
 
-        jMenuItem6.setText("Inscripción");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
-            }
-        });
-        btnMenuKick.add(jMenuItem6);
+        jMenuItem17.setText("Pagos semanales");
+        btnMenuReportes.add(jMenuItem17);
 
-        jMenuItem7.setText("Cobro");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
-            }
-        });
-        btnMenuKick.add(jMenuItem7);
+        jMenuItem18.setText("Visitas");
+        btnMenuReportes.add(jMenuItem18);
 
-        jMenuBar1.add(btnMenuKick);
+        jMenuItem19.setText("Pagos Kick Boxing");
+        btnMenuReportes.add(jMenuItem19);
 
-        btnMenuBajas.setText("Dar de baja");
-        jMenuBar1.add(btnMenuBajas);
+        jMenuItem20.setText("Inventario");
+        btnMenuReportes.add(jMenuItem20);
+
+        jMenuItem21.setText("Alumnos Kick Boxing");
+        btnMenuReportes.add(jMenuItem21);
+
+        jMenuItem22.setText("Inscripciones");
+        btnMenuReportes.add(jMenuItem22);
+
+        jMenuItem23.setText("Clientes semanales");
+        btnMenuReportes.add(jMenuItem23);
+
+        jMenuItem24.setText("Clientes mensuales");
+        btnMenuReportes.add(jMenuItem24);
+
+        jMenuBar1.add(btnMenuReportes);
 
         setJMenuBar(jMenuBar1);
 
@@ -420,6 +545,48 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         centrarVentanaInterna(new CobrarKick());
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        if(!(mensualesAltas instanceof MensualesAltas)){
+           mensualesAltas = new MensualesAltas();
+        }
+        centrarVentanaInterna(new MensualesAltas());
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        if(!(semanalesAltas instanceof SemanalesAltas)){
+            semanalesAltas = new SemanalesAltas();
+        }
+        centrarVentanaInterna(new SemanalesAltas());
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        if(!(kickBoxingAltas instanceof KickBoxingAltas)){
+            kickBoxingAltas = new KickBoxingAltas();
+        }
+        centrarVentanaInterna(new KickBoxingAltas());
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        if(!(mensualesBajas instanceof MensualesBajas)){
+            mensualesBajas = new MensualesBajas();
+        }
+        centrarVentanaInterna(new MensualesBajas());
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        if(!(semanalesBajas instanceof SemanalesBajas)){
+            semanalesBajas = new SemanalesBajas();
+        }
+        centrarVentanaInterna(new SemanalesBajas());
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        if(!(kickBoxingBajas instanceof KickBoxingBajas)){
+            kickBoxingBajas = new KickBoxingBajas();
+        }
+        centrarVentanaInterna(new KickBoxingBajas());
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -461,17 +628,35 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu btnMenuBajas;
+    private javax.swing.JMenu btnMenuAltasBajas;
     private javax.swing.JMenu btnMenuCobros;
     private javax.swing.JMenu btnMenuInscripcion;
     private javax.swing.JMenu btnMenuInventario;
-    private javax.swing.JMenu btnMenuKick;
+    private javax.swing.JMenu btnMenuReportes;
     private javax.swing.JMenu btnMenuVenta;
     private javax.swing.JButton btnReintentarConexion;
     private javax.swing.JDesktopPane desktopPane;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem20;
+    private javax.swing.JMenuItem jMenuItem21;
+    private javax.swing.JMenuItem jMenuItem22;
+    private javax.swing.JMenuItem jMenuItem23;
+    private javax.swing.JMenuItem jMenuItem24;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
