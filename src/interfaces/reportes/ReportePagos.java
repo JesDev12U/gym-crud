@@ -3,21 +3,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package interfaces.reportes;
+
 import gym.*;
-import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
+import java.io.IOException;
 
 /**
  *
- * @author jesus
+ * @author Administrator
  */
-public class ReporteVentas extends javax.swing.JInternalFrame {
+public class ReportePagos extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form ReporteVentas
+     * Creates new form ReportePagos
      */
-    public ReporteVentas() {
+    public ReportePagos() {
         initComponents();
         mostrarDatosTabla();
         labelCarga.setVisible(false);
@@ -25,12 +29,7 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
     
     private void mostrarDatosTabla(){
         if(MySQLConnection.conectarBD()){
-            String query = "SELECT v.ID_Venta, v.ID_Pago, p.Form_Pago, v.Hor_Venta, d.ID_Prod, \n" +
-            "i.T_Prod, i.Nom_Prod, i.Pre_Prod, d.Cantidad_V, d.Importe_V\n" +
-            "FROM Ventas v\n" +
-            "INNER JOIN DetalleDeLaVenta d ON v.ID_Venta = d.ID_Venta\n" +
-            "INNER JOIN Pagos p on v.ID_Pago = p.ID_Pago\n" +
-            "INNER JOIN Inventario i on i.ID_Prod = d.ID_Prod";
+            String query = "SELECT * FROM Pagos";
             Statement st;
             Connection conexion = MySQLConnection.getConexion();
             DefaultTableModel model;
@@ -40,32 +39,22 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                    return false;
                }
             };
-            model.addColumn("ID_Venta");
-            model.addColumn("ID_Pago");
-            model.addColumn("Form_Pago");
-            model.addColumn("Hor_Venta");
-            model.addColumn("ID_Prod");
-            model.addColumn("T_Prod");
-            model.addColumn("Nom_Prod");
-            model.addColumn("Pre_Prod");
-            model.addColumn("Cantidad_V");
-            model.addColumn("Importe_V");
+            model.addColumn("ID del pago");
+            model.addColumn("Descripción");
+            model.addColumn("Fecha");
+            model.addColumn("Forma de pago");
+            model.addColumn("Monto");
             tabla.setModel(model);
-            Object[] datos = new Object[10];
+            Object[] datos = new Object[5];
             try{
                 st = conexion.createStatement();
                 ResultSet rs = st.executeQuery(query);
                 while(rs.next()){
                     datos[0] = rs.getInt(1);
-                    datos[1] = rs.getInt(2);
-                    datos[2] = rs.getString(3);
-                    datos[3] = rs.getTimestamp(4);
-                    datos[4] = rs.getInt(5);
-                    datos[5] = rs.getString(6);
-                    datos[6] = rs.getString(7);
-                    datos[7] = rs.getDouble(8);
-                    datos[8] = rs.getInt(9);
-                    datos[9] = rs.getDouble(10);
+                    datos[1] = rs.getString(2);
+                    datos[2] = rs.getDate(3);
+                    datos[3] = rs.getString(4);
+                    datos[4] = rs.getDouble(5);
                     model.addRow(datos);
                 }
                 tabla.setModel(model);
@@ -93,18 +82,21 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         btnExcel = new javax.swing.JToggleButton();
-        btnRefrescar = new javax.swing.JButton();
         labelCarga = new javax.swing.JLabel();
+        btnRefrescar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Reporte de ventas");
+        setTitle("Reporte de pagos");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Reporte de pagos");
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -119,9 +111,6 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tabla);
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel1.setText("Reporte de ventas");
-
         btnExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/excel.png"))); // NOI18N
         btnExcel.setText("Exportar a Excel");
         btnExcel.addActionListener(new java.awt.event.ActionListener() {
@@ -130,6 +119,8 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
             }
         });
 
+        labelCarga.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cargando.gif"))); // NOI18N
+
         btnRefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/refresh.png"))); // NOI18N
         btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,56 +128,53 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
             }
         });
 
-        labelCarga.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cargando.gif"))); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(309, 309, 309)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(279, 279, 279))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(157, 157, 157)
+                .addGap(69, 69, 69)
                 .addComponent(btnExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addGap(58, 58, 58)
                 .addComponent(labelCarga)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRefrescar)
-                .addGap(45, 45, 45))
+                .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnRefrescar)
-                            .addComponent(btnExcel)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(labelCarga)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(40, 40, 40)
+                            .addComponent(btnExcel)
+                            .addGap(27, 27, 27))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(labelCarga)
+                            .addGap(16, 16, 16)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnRefrescar)
+                        .addGap(34, 34, 34))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
-        mostrarDatosTabla();
-    }//GEN-LAST:event_btnRefrescarActionPerformed
 
     private void btnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcelActionPerformed
         new Thread(){
@@ -204,6 +192,10 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
             }
         }.start();
     }//GEN-LAST:event_btnExcelActionPerformed
+
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        mostrarDatosTabla();
+    }//GEN-LAST:event_btnRefrescarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -18,6 +18,7 @@ import interfaces.altasbajas.altas.MensualesAltas;
 import interfaces.altasbajas.bajas.MensualesBajas;
 import interfaces.altasbajas.bajas.SemanalesBajas;
 import interfaces.altasbajas.bajas.KickBoxingBajas;
+import interfaces.reportes.*;
 import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 import com.jtattoo.plaf.aero.AeroLookAndFeel;
 import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
@@ -67,6 +68,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     MensualesBajas mensualesBajas;
     SemanalesBajas semanalesBajas;
     KickBoxingBajas kickBoxingBajas;
+    ReportePagos reportePagos;
     /**
      * Creates new form Principal
      */
@@ -430,6 +432,11 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         btnMenuReportes.add(jMenuItem5);
 
         jMenuItem3.setText("Pagos");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         btnMenuReportes.add(jMenuItem3);
 
         jMenuItem16.setText("Mensualidades");
@@ -586,6 +593,13 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         }
         centrarVentanaInterna(new KickBoxingBajas());
     }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        if(!(reportePagos instanceof ReportePagos)){
+            reportePagos = new ReportePagos();
+        }
+        centrarVentanaInterna(new ReportePagos());
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
