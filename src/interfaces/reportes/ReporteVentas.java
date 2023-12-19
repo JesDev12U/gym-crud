@@ -117,6 +117,7 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabla.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tabla);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N

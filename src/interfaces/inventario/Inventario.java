@@ -188,6 +188,7 @@ public final class Inventario extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaInventario.getTableHeader().setReorderingAllowed(false);
         tablaInventario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaInventarioMouseClicked(evt);

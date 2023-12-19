@@ -109,6 +109,7 @@ public class ReportePagos extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabla.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tabla);
 
         btnExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/excel.png"))); // NOI18N
@@ -165,7 +166,6 @@ public class ReportePagos extends javax.swing.JInternalFrame {
                             .addComponent(btnExcel)
                             .addGap(27, 27, 27))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(labelCarga)
                             .addGap(16, 16, 16)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()

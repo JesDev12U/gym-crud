@@ -211,6 +211,7 @@ public class Cobrar extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaClientes.getTableHeader().setReorderingAllowed(false);
         tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaClientesMouseClicked(evt);

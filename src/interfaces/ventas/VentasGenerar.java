@@ -89,6 +89,7 @@ public class VentasGenerar extends javax.swing.JInternalFrame {
                 "ID", "Tipo producto", "Nombre", "Precio", "Unidades existentes"
             }
         ));
+        tablaInventario.getTableHeader().setReorderingAllowed(false);
         tablaInventario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaInventarioMouseClicked(evt);
@@ -117,6 +118,7 @@ public class VentasGenerar extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaVentas.getTableHeader().setReorderingAllowed(false);
         tablaVentas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaVentasMouseClicked(evt);

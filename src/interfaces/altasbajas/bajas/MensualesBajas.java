@@ -56,6 +56,7 @@ public class MensualesBajas extends javax.swing.JInternalFrame {
                 "ID", "Nombre completo", "Operación"
             }
         ));
+        tabla.getTableHeader().setReorderingAllowed(false);
         tabla.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaMouseClicked(evt);

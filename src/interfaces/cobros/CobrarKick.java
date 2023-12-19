@@ -149,6 +149,7 @@ public class CobrarKick extends javax.swing.JInternalFrame {
                 "ID del alumno", "Nombre", "Último pago"
             }
         ));
+        tablaKick.getTableHeader().setReorderingAllowed(false);
         tablaKick.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaKickMouseClicked(evt);
