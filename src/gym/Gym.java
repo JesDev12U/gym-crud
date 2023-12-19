@@ -64,11 +64,25 @@ public class Gym {
         //Validacion A-Z a-z
         if (!((evento.getKeyChar() >= 65 && evento.getKeyChar() <= 90)
                 || (evento.getKeyChar() >= 97 && evento.getKeyChar() <= 122)
-                || (evento.getKeyChar() == 32))) {
+                || (evento.getKeyChar() == 32)
+                || (evento.getKeyChar() == 241)
+                || (evento.getKeyChar() == 209))) {
             evento.consume();
         }
     }
 
+    public static void validarAlfanumerico(java.awt.event.KeyEvent evento){
+        //Validacion A-Z a-z 0-9
+        if (!((evento.getKeyChar() >= 65 && evento.getKeyChar() <= 90)
+                || (evento.getKeyChar() >= 97 && evento.getKeyChar() <= 122)
+                || (evento.getKeyChar() == 32)
+                || (evento.getKeyChar() == 241)
+                || (evento.getKeyChar() == 209)
+                || (evento.getKeyChar() >= 48 && evento.getKeyChar() <= 57))){
+            evento.consume();
+        }
+    }
+    
     public static void validarCamposVacios(javax.swing.JTextField txt, javax.swing.JLabel lbl) {
         if (txt.getText().isEmpty()) {
             lbl.setText("Campo obligatorio");

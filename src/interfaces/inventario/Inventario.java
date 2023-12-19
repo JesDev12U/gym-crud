@@ -339,7 +339,7 @@ public final class Inventario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtNomKeyReleased
 
     private void txtNomKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomKeyTyped
-        Gym.validarAlfabeto(evt);
+        Gym.validarAlfanumerico(evt);
     }//GEN-LAST:event_txtNomKeyTyped
 
     private int agregarProducto() throws SQLException{

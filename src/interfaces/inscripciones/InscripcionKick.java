@@ -337,7 +337,7 @@ public class InscripcionKick extends javax.swing.JInternalFrame {
 
     private void txtTelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelKeyTyped
         Gym.validarNumeros(evt);
-        Gym.validarCantidadCaracteres(txtTel, evt, 30);
+        Gym.validarCantidadCaracteres(txtTel, evt, 10);
     }//GEN-LAST:event_txtTelKeyTyped
 
     private void txtTelKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelKeyReleased

@@ -86,7 +86,7 @@ public class Inscripcion extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Forma de pago");
 
-        cmbxFormaPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Tarjeta", " " }));
+        cmbxFormaPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Tarjeta" }));
 
         btnRealizarIns.setFont(new java.awt.Font("Dialog", 0, 20)); // NOI18N
         btnRealizarIns.setText("Realizar inscripción");
