@@ -7,8 +7,8 @@ package interfaces.cobros;
 import gym.*;
 import javax.swing.JOptionPane;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -450,7 +450,7 @@ public class Cobrar extends javax.swing.JInternalFrame {
         }.start();
     }//GEN-LAST:event_btnRealizarCobroActionPerformed
 
-    public static long calcularDiasDiferencia(String fechaSeleccionada){
+    /*public static long calcularDiasDiferencia(String fechaSeleccionada){
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         try {
             // Parsear la fecha a java.sql.Date
@@ -469,19 +469,21 @@ public class Cobrar extends javax.swing.JInternalFrame {
             System.out.println(e);
         }
         return -1;
-    }
+    }*/
     
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
         int seleccionar = tablaClientes.rowAtPoint(evt.getPoint());
-        String fechaSeleccionada = String.valueOf(tablaClientes.getValueAt(seleccionar, 3));
-        long dias = calcularDiasDiferencia(fechaSeleccionada);
+        //String fechaSeleccionada = String.valueOf(tablaClientes.getValueAt(seleccionar, 3));
+        //long dias = calcularDiasDiferencia(fechaSeleccionada);
         String id = String.valueOf(tablaClientes.getValueAt(seleccionar, 0));
         txtFolio.setText(id);
         char comienzoId = id.charAt(0);
         if(comienzoId == 'C'){
-            txtMonto.setText(String.valueOf((dias * (costoMensual * 0.10)) + costoMensual));
+            //txtMonto.setText(String.valueOf((dias * (costoMensual * 0.10)) + costoMensual));
+            txtMonto.setText(String.valueOf(costoMensual));
         } else{
-            txtMonto.setText(String.valueOf((dias * (costoSemanal * 0.10)) + costoSemanal));
+            //txtMonto.setText(String.valueOf((dias * (costoSemanal * 0.10)) + costoSemanal));
+            txtMonto.setText(String.valueOf(costoSemanal));
         }
     }//GEN-LAST:event_tablaClientesMouseClicked
 
