@@ -65,8 +65,21 @@ public class Gym {
         if (!((evento.getKeyChar() >= 65 && evento.getKeyChar() <= 90)
                 || (evento.getKeyChar() >= 97 && evento.getKeyChar() <= 122)
                 || (evento.getKeyChar() == 32)
-                || (evento.getKeyChar() == 241)
-                || (evento.getKeyChar() == 209))) {
+                || (evento.getKeyChar() == 241) //Ñ
+                || (evento.getKeyChar() == 209) //ñ
+                || (evento.getKeyChar() == 193) //Á
+                || (evento.getKeyChar() == 201) //É
+                || (evento.getKeyChar() == 205) //Í
+                || (evento.getKeyChar() == 211) //Ó
+                || (evento.getKeyChar() == 218) //Ú
+                || (evento.getKeyChar() == 220) //Ü
+                || (evento.getKeyChar() == 225) //á
+                || (evento.getKeyChar() == 233) //é
+                || (evento.getKeyChar() == 237) //í
+                || (evento.getKeyChar() == 243) //ó
+                || (evento.getKeyChar() == 250) //ú
+                || (evento.getKeyChar() == 252) //ü
+                )) {
             evento.consume();
         }
     }
@@ -76,9 +89,22 @@ public class Gym {
         if (!((evento.getKeyChar() >= 65 && evento.getKeyChar() <= 90)
                 || (evento.getKeyChar() >= 97 && evento.getKeyChar() <= 122)
                 || (evento.getKeyChar() == 32)
-                || (evento.getKeyChar() == 241)
-                || (evento.getKeyChar() == 209)
-                || (evento.getKeyChar() >= 48 && evento.getKeyChar() <= 57))){
+                || (evento.getKeyChar() == 241) //Ñ
+                || (evento.getKeyChar() == 209) //ñ
+                || (evento.getKeyChar() >= 48 && evento.getKeyChar() <= 57)
+                || (evento.getKeyChar() == 193) //Á
+                || (evento.getKeyChar() == 201) //É
+                || (evento.getKeyChar() == 205) //Í
+                || (evento.getKeyChar() == 211) //Ó
+                || (evento.getKeyChar() == 218) //Ú
+                || (evento.getKeyChar() == 220) //Ü
+                || (evento.getKeyChar() == 225) //á
+                || (evento.getKeyChar() == 233) //é
+                || (evento.getKeyChar() == 237) //í
+                || (evento.getKeyChar() == 243) //ó
+                || (evento.getKeyChar() == 250) //ú
+                || (evento.getKeyChar() == 252) //ü
+            )){    
             evento.consume();
         }
     }
