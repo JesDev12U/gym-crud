@@ -72,6 +72,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     ReporteMensualidades reporteMensualidades;
     ReportePagosSemanales reportePagosSemanales;
     ReporteVisitas reporteVisitas;
+    ReportePagosKick reportePagosKick;
     /**
      * Creates new form Principal
      */
@@ -467,6 +468,11 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         btnMenuReportes.add(jMenuItem18);
 
         jMenuItem19.setText("Pagos Kick Boxing");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
         btnMenuReportes.add(jMenuItem19);
 
         jMenuItem20.setText("Inventario");
@@ -639,6 +645,13 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         }
         centrarVentanaInterna(new ReporteVisitas());
     }//GEN-LAST:event_jMenuItem18ActionPerformed
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        if(!(reportePagosKick instanceof ReportePagosKick)){
+            reportePagosKick = new ReportePagosKick();
+        }
+        centrarVentanaInterna(new ReportePagosKick());
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
 
     /**
      * @param args the command line arguments
