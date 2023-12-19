@@ -40,16 +40,16 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                    return false;
                }
             };
-            model.addColumn("ID_Venta");
-            model.addColumn("ID_Pago");
-            model.addColumn("Form_Pago");
-            model.addColumn("Hor_Venta");
-            model.addColumn("ID_Prod");
-            model.addColumn("T_Prod");
-            model.addColumn("Nom_Prod");
-            model.addColumn("Pre_Prod");
-            model.addColumn("Cantidad_V");
-            model.addColumn("Importe_V");
+            model.addColumn("ID de la venta");
+            model.addColumn("ID del pago");
+            model.addColumn("Forma de Pago");
+            model.addColumn("Fecha y hora de la Venta");
+            model.addColumn("ID del Producto");
+            model.addColumn("Tipo de producto");
+            model.addColumn("Nombre del Producto");
+            model.addColumn("Precio del Producto");
+            model.addColumn("Cantidad vendida");
+            model.addColumn("Importe de la venta");
             tabla.setModel(model);
             Object[] datos = new Object[10];
             try{
