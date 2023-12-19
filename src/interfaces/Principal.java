@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import interfaces.reportes.ReporteInscripcionesMensuales;
 import interfaces.reportes.ReporteVentas;
 import interfaces.ventas.VentasGenerar;
 import interfaces.inventario.InventarioDesHab;
@@ -19,7 +20,6 @@ import interfaces.altasbajas.bajas.MensualesBajas;
 import interfaces.altasbajas.bajas.SemanalesBajas;
 import interfaces.altasbajas.bajas.KickBoxingBajas;
 import interfaces.reportes.*;
-import interfaces.reportes.inscripciones.*;
 import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 import com.jtattoo.plaf.aero.AeroLookAndFeel;
 import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
@@ -229,10 +229,7 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem19 = new javax.swing.JMenuItem();
         jMenuItem20 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem25 = new javax.swing.JMenuItem();
-        jMenuItem26 = new javax.swing.JMenuItem();
-        jMenuItem27 = new javax.swing.JMenuItem();
+        jMenuItem22 = new javax.swing.JMenuItem();
         jMenuItem23 = new javax.swing.JMenuItem();
         jMenuItem24 = new javax.swing.JMenuItem();
         jMenuItem21 = new javax.swing.JMenuItem();
@@ -482,23 +479,13 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         });
         btnMenuReportes.add(jMenuItem20);
 
-        jMenu1.setText("Inscripciones");
-
-        jMenuItem25.setText("Mensuales");
-        jMenuItem25.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem22.setText("Inscripciones mensuales");
+        jMenuItem22.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem25ActionPerformed(evt);
+                jMenuItem22ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem25);
-
-        jMenuItem26.setText("Semanales");
-        jMenu1.add(jMenuItem26);
-
-        jMenuItem27.setText("Kick Boxing");
-        jMenu1.add(jMenuItem27);
-
-        btnMenuReportes.add(jMenu1);
+        btnMenuReportes.add(jMenuItem22);
 
         jMenuItem23.setText("Clientes semanales");
         btnMenuReportes.add(jMenuItem23);
@@ -699,12 +686,12 @@ public class Principal extends javax.swing.JFrame implements Runnable{
         centrarVentanaInterna(new ReporteAlumnosKick());
     }//GEN-LAST:event_jMenuItem21ActionPerformed
 
-    private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
+    private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
         if(!(reporteInscripcionesMensuales instanceof ReporteInscripcionesMensuales)){
             reporteInscripcionesMensuales = new ReporteInscripcionesMensuales();
         }
         centrarVentanaInterna(new ReporteInscripcionesMensuales());
-    }//GEN-LAST:event_jMenuItem25ActionPerformed
+    }//GEN-LAST:event_jMenuItem22ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -755,7 +742,6 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     private javax.swing.JMenu btnMenuVenta;
     private javax.swing.JButton btnReintentarConexion;
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
@@ -773,11 +759,9 @@ public class Principal extends javax.swing.JFrame implements Runnable{
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem21;
+    private javax.swing.JMenuItem jMenuItem22;
     private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem24;
-    private javax.swing.JMenuItem jMenuItem25;
-    private javax.swing.JMenuItem jMenuItem26;
-    private javax.swing.JMenuItem jMenuItem27;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
