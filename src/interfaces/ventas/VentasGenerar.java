@@ -282,7 +282,15 @@ public class VentasGenerar extends javax.swing.JInternalFrame {
                     if (modelo1.getValueAt(filas[0], 0).equals(modelo2.getValueAt(i, 0))) {
                         // Si el producto ya está en la tabla, actualizamos la cantidad
                         int cantidadExistente = (int) modelo2.getValueAt(i, 4);
-                        modelo2.setValueAt(cantidadExistente + cantidadVenta, i, 4);
+                        int sumaProductos = cantidadExistente + cantidadVenta;
+                        if(sumaProductos > uE){
+                            JOptionPane.showMessageDialog(null, 
+                                    "La cantidad excede de lo que hay en existencia",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else{
+                            modelo2.setValueAt(sumaProductos, i, 4);    
+                        }
                         encontrado = true;
                         break;
                     }
